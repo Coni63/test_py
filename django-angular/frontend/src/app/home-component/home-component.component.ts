@@ -30,7 +30,9 @@ export class HomeComponent implements OnInit {
   }
 
   login(): void {
-    this.oidcSecurityService.authorize("0-test_clientid");
+    this.oidcSecurityService.authorize("0-test_clientid", {
+      
+    });
   }
 
   refreshSession(): void {

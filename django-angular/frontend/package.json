@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --ssl --host 0.0.0.0",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -21,6 +21,7 @@
     "angular-auth-oidc-client": "^18.0.1",
     "angular-oauth2-oidc": "^17.0.2",
     "rxjs": "~7.8.0",
+    "testapp": "file:",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },

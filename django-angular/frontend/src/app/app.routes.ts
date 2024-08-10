@@ -6,6 +6,7 @@ import { AuthorizedComponent } from './authorized-component/authorized-component
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
+    { path: 'logout', component: HomeComponent },
     { path: 'unauthorized', component: UnauthorizedComponent },
     { path: 'forbidden', component: UnauthorizedComponent },
     { path: 'authorized', component: AuthorizedComponent },
