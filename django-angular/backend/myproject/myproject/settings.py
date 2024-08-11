@@ -25,7 +25,9 @@ SECRET_KEY = "django-insecure-#cloi4$9aj!^11w#zf%g&x7kr(5kfip$2x568v12*3059el&l8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "192.168.1.18",
+]
 
 
 # Application definition
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'rest_framework',
+    'rest_framework_simplejwt',
     'adminsortable2',
     'orderable',
     'slick_reporting',
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'myproject.token_middleware.KeycloakMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -130,3 +134,33 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# AUTHENTICATION_BACKENDS = [
+#     'myproject.auth.KeycloakBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'myproject.auth.KeycloakJWTAuthentication',
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+}
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'email',
+    'USER_ID_CLAIM': 'sub', 
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+
+KEYCLOAK_CLIENT_ID = 'test_clientid'
+KEYCLOAK_PUBLIC_KEY = """
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoUKXq33nsuurProAkLkYnN+OnQBkZ9KwTQ/V4zd6Ad3y+WdRH45+fyo7DkVhBj75nv9wKG/9A9XyXyJkGgA686HXgtV7w/r6KpI/acA2I62caxvVMOi589lN1WE5MKw8WGQ+jJyIfn8wUjul/AVMkiMEmRgC/N7jR1xk92yYtR+T72RYWpSpQuBfLXXYEb9oCwa9IevObqzfTcHmig9biKqJvq1uVWbtT0OcZisLMlqPzOXDECsVQ2oOTG5YHhKsdI/nEgex8F6VV4kfHvTPJ9R8OZhCWEWU7g1R5k5N6Je59gfnIjXwH+sp3Jk09qOa4YuRlHJ7mzsU2/anetCVFwIDAQAB
+-----END PUBLIC KEY-----
+"""

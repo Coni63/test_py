@@ -64,4 +64,22 @@ export class HomeComponent implements OnInit {
       .revokeAccessToken()
       .subscribe((result) => console.log(result));
   }
+
+  test_api(): void {
+    this.oidcSecurityService.getAccessToken().subscribe((token) => {
+      if (token) {
+        fetch('/sample/my-api/', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => console.log(data));
+      } else {
+        console.error('No access token available');
+      }
+    });
+  }
 }
