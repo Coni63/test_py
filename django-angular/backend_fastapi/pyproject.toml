@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "backend-fastapi"
+version = "0.1.0"
+description = ""
+authors = ["Nicolas M. <mine.nicolas@gmail.com>"]
+readme = "README.md"
+packages = [{include = "backend_fastapi"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["uvicorn"], version = "^0.112.1"}
+uvicorn = "^0.30.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

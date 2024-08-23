@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule  } from '@angular/common';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -12,11 +13,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 })
 export class HomeComponent implements OnInit {
   private readonly oidcSecurityService = inject(OidcSecurityService);
+  private http = inject(HttpClient);
 
   configuration$ = this.oidcSecurityService.getConfiguration();
 
   userData$ = this.oidcSecurityService.userData$;
-
   isAuthenticated = false;
 
   ngOnInit(): void {
@@ -30,9 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   login(): void {
-    this.oidcSecurityService.authorize("0-test_clientid", {
-      
-    });
+    this.oidcSecurityService.authorize("0-test_clientid", {});
   }
 
   refreshSession(): void {
@@ -66,20 +65,24 @@ export class HomeComponent implements OnInit {
   }
 
   test_api(): void {
-    this.oidcSecurityService.getAccessToken().subscribe((token) => {
-      if (token) {
-        fetch('/sample/my-api/', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => console.log(data));
-      } else {
-        console.error('No access token available');
-      }
-    });
+    // const headers = { 'Authorization': `Bearer abc` };
+    this.http.get('/sample/my-api/').subscribe(
+      (data: any) => console.log(data),
+      (error: any) => console.error(error)
+    );
   }
+
+  // test_api(): void {
+  //   this.oidcSecurityService.getAccessToken().subscribe((token) => {
+  //     if (token) {
+  //       const headers = { 'Authorization': `Bearer ${token}` };
+  //       this.http.get('https://192.168.1.18:4200/sample/my-api/', { headers }).subscribe(
+  //         (data: any) => console.log(data),
+  //         (error: any) => console.error(error)
+  //       );
+  //     } else {
+  //       console.error('No access token available');
+  //     }
+  //   });
+  // }
 }

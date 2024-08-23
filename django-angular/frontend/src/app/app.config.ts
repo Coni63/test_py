@@ -4,13 +4,16 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor, LogLevel, provideAuth } from 'angular-auth-oidc-client';
+import { loggingInterceptor } from '../logging-interceptor';
+import { customAuthInterceptor } from '../auth-interceptor';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-
+    // provideHttpClient(withInterceptors([loggingInterceptor, authInterceptor()])),
+    provideHttpClient(withInterceptors([authInterceptor()])),
     provideAuth({
       config: {
         authority: 'https://192.168.1.27:9090/realms/master',
@@ -22,14 +25,14 @@ export const appConfig: ApplicationConfig = {
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true,
-        logLevel: LogLevel.Debug,
+        logLevel: LogLevel.Error,
         triggerAuthorizationResultEvent: true,
         postLoginRoute: 'https://192.168.1.18:4200/home',
         forbiddenRoute: 'https://192.168.1.18:4200/forbidden',
         unauthorizedRoute: 'https://192.168.1.18:4200/unauthorized',
         historyCleanupOff: true,
+        secureRoutes: ['/'],
       },
     }),
-    provideHttpClient(withInterceptors([authInterceptor()])),
   ] 
 };
