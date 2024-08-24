@@ -10,6 +10,11 @@ packages = [{include = "backend_fastapi"}]
 python = "^3.10"
 fastapi = {extras = ["uvicorn"], version = "^0.112.1"}
 uvicorn = "^0.30.6"
+python-decouple = "^3.8"
+pyjwt = "^2.9.0"
+requests = "^2.32.3"
+python-jose = "^3.3.0"
+cryptography = "^43.0.0"
 
 
 [build-system]
