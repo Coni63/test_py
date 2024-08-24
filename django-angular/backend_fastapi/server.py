@@ -1,15 +1,14 @@
 from fastapi import Depends, FastAPI
 import uvicorn
 
-from auth import verify_token
-
-# from auth import security
+from auth import can_edit, can_read
+from auth.jwt_model import JWTToken
 
 app = FastAPI()
 
 
 @app.get("/sample/my-api/")
-async def root(user_info: dict = Depends(verify_token)):
+async def root(user_info: JWTToken = Depends(can_read)):
     print(user_info)
     return {"message": "Hello World"}
 
