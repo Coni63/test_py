@@ -1,0 +1,29 @@
+main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    min-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.sidebar {
+    transition: width 0.2s;
+    width: 0px;
+    overflow: hidden;
+}
+
+.visible {
+    width: 280px;
+}
+
+
+.a1 {
+    background-color: aqua;
+}
+
+.a2 {
+    background-color: red;
+}
