@@ -83,3 +83,15 @@ main {
      #BD1550 padding-box; /* the color  */
     width: fit-content;
   }
+  .ribbon.notrun {
+    --r: .8em; /* control the cutout */
+    
+    border-block: .5em solid #0000;
+    padding-inline: calc(var(--r) + .25em) .5em;
+    line-height: 1.8;
+    clip-path: polygon(0 0,100% 0,100% 100%,0 100%,var(--r) calc(100% - .25em),0 50%,var(--r) .25em);
+    background:
+     radial-gradient(.2em 50% at right,#000a,#0000) border-box,
+     #45ADA8 padding-box; /* the color  */
+    width: fit-content;
+  }
