@@ -27,3 +27,59 @@ main {
 .a2 {
     background-color: red;
 }
+
+
+
+// /* HTML: <div class="ribbon">Your text content</div> */
+// .ribbon {
+//     font-size: 28px;
+//     font-weight: bold;
+//     color: #fff;
+//   }
+//   .ribbon {
+//     --f: .0em; /* control the folded part*/
+//     --r: 1em; /* control the ribbon shape */
+    
+//     position: absolute;
+//     right: 20px;
+//     top: calc(-1*var(--f));
+//     padding: .2em;
+//     background: #C8CF02;
+//     border-right: var(--f) solid #0005;
+//     border-bottom: var(--r) solid #0000;
+//     clip-path: polygon(calc(100% - var(--f)) 0,0 0,0 calc(100% - var(--r)),calc(50% - var(--f)/2) 100%,calc(100% - var(--f)) calc(100% - var(--r)),calc(100% - var(--f)) var(--f),100% var(--f));
+//   }
+
+
+/* HTML: <div class="ribbon">Your text content</div> */
+.ribbon {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    position: absolute ;
+    right: 0px;
+  }
+  .ribbon.validated {
+    --r: .8em; /* control the cutout */
+    
+    border-block: .5em solid #0000;
+    padding-inline: calc(var(--r) + .25em) .5em;
+    line-height: 1.8;
+    clip-path: polygon(0 0,100% 0,100% 100%,0 100%,0 calc(100% - .25em),var(--r) 50%,0 .25em);
+    background:
+     radial-gradient(.2em 50% at right,#000a,#0000) border-box,
+     #2699dc padding-box; /* the color  */
+    width: fit-content;
+  }
+  .ribbon.toreview {
+    --r: .8em; /* control the cutout */
+    
+    border-block: .5em solid #0000;
+    padding-inline: calc(var(--r) + .25em) .5em;
+    line-height: 1.8;
+    clip-path: polygon(0 0,100% 0,100% 100%,0 100%,var(--r) calc(100% - .25em),0 50%,var(--r) .25em);
+    background:
+     radial-gradient(.2em 50% at right,#000a,#0000) border-box,
+     #BD1550 padding-box; /* the color  */
+    width: fit-content;
+  }
