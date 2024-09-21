@@ -9,9 +9,24 @@ import { Component } from '@angular/core';
 })
 export class LayoutComponent {
   visible: boolean = true;
-
+  expanded: boolean = false;
 
   toggle_sidebar() {
     this.visible = !this.visible;
+  }
+
+  test(event: any){
+    event.stopPropagation();
+    this.expanded = !this.expanded;
+  }
+
+  toogleTeam(event: any, team: string){
+    event.stopPropagation();
+    console.log(team);
+  }
+
+  logout(event: any){
+    event.stopPropagation();
+
   }
 }
