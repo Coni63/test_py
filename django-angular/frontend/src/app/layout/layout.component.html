@@ -66,30 +66,27 @@
         </button> -->
         <div class="row">
             <div class="col-md-8 a1">aa</div>
-            <div class="col-md-4 a2">
-                <div class="bs-stepper">
-                    <div class="bs-stepper-header" role="tablist">
-                      <!-- your steps here -->
-                      <div class="step" data-target="#logins-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
-                          <span class="bs-stepper-circle">1</span>
-                          <span class="bs-stepper-label">Logins</span>
-                        </button>
-                      </div>
-                      <div class="line"></div>
-                      <div class="step" data-target="#information-part">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
-                          <span class="bs-stepper-circle">2</span>
-                          <span class="bs-stepper-label">Various information</span>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="bs-stepper-content">
-                      <!-- your steps content here -->
-                      <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger"></div>
-                      <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger"></div>
-                    </div>
-                  </div>
+            <div class="col-md-4">
+
+              <div class="mb-3">
+                <label for="basic-url" class="form-label">Your vanity URL</label>
+                <div class="input-group is-invalid" id="basic-url">
+                  <input type="text" class="form-control  is-invalid" placeholder="Recipient's username">
+                  <button class="btn btn-secondary" type="button">X</button>
+                  <button class="btn btn-secondary" type="button">Y</button>
+                </div>
+                <div class="invalid-feedback">
+                  Please choose a username.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="validationTextarea" class="form-label">Textarea</label>
+                <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea" required></textarea>
+                <div class="invalid-feedback">
+                  Please enter a message in the textarea.
+                </div>
+              </div>
 
             </div>
         </div>
