@@ -2,38 +2,38 @@
 
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar"  [class.visible]="visible">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-          <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+          <i class="bi bi-speedometer2"></i>
           <span class="fs-4">Sidebar</span>
         </a>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
           <li class="nav-item">
             <a href="#" class="nav-link active" aria-current="page">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-              Home
+              <i class="bi bi-check-circle"></i>
+              <span>Home</span>
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+              <i class="bi bi-speedometer2"></i>
               Dashboard
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+              <i class="bi bi-table"></i>
               Orders
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+              <i class="bi bi-grid"></i>
               Products
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+              <i class="bi bi-table"></i>
               Customers
             </a>
           </li>
@@ -54,6 +54,55 @@
         </div>
     </div>
 
+
+
+    <!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 4.5rem;"> -->
+    <div class="d-flex flex-column flex-shrink-0 text-white bg-dark" style="width: 4.5rem;">
+      <a href="/" class="d-block p-3 link-dark text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
+        <i class="bi bi-speedometer2"></i>
+        <span class="visually-hidden">Icon-only</span>
+      </a>
+      <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+        <li class="nav-item">
+          <a href="#" class="nav-link active py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Home" data-bs-original-title="Home">
+            <i class="bi bi-check-circle"></i>
+            <span class="visually-hidden">Orders</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Dashboard" data-bs-original-title="Dashboard">
+            <i class="bi bi-speedometer2"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Orders" data-bs-original-title="Orders">
+            <i class="bi bi-table"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Products" data-bs-original-title="Products">
+            <i class="bi bi-grid"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Customers" data-bs-original-title="Customers">
+            <i class="bi bi-table"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="dropdown border-top">
+        <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle"  [class.show]="expanded" (click)="test($event)" data-bs-toggle="dropdown" [attr.aria-expanded]="expanded">
+          <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" class="rounded-circle">
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow project" [class.show]="expanded" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" (click)="toogleTeam($event, 'a')">New project...</a></li>
+          <li><a class="dropdown-item" (click)="toogleTeam($event, 'a')">Settings</a></li>
+          <li><a class="dropdown-item" (click)="toogleTeam($event, 'a')">Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" (click)="logout($event)">Sign out</a></li>
+        </ul>
+      </div>
+    </div>
 
 
 
