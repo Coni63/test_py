@@ -21,6 +21,7 @@
     "angular-auth-oidc-client": "^18.0.1",
     "angular-oauth2-oidc": "^17.0.2",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "rxjs": "~7.8.0",
     "testapp": "file:",
     "tslib": "^2.3.0",

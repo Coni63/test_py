@@ -1,0 +1,29 @@
+.box {
+	height: 150px;
+	width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 5px;
+}
+.light {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+}
+.dark {
+	background: #999999;
+}
+.red {
+	background-color: #dc3545;
+}
+.yellow {
+	background: #ffc107;
+}
+.green {
+	background: #198754;
+}
