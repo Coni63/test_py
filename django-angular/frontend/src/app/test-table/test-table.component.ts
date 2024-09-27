@@ -4,16 +4,19 @@ import { DataTableDirective, DataTablesModule } from "angular-datatables";
 import { Config } from 'datatables.net';
 import { error } from 'jquery';
 
-interface PokemonResult {
-  name: string;
-  url: string;
+interface User {
+  first_name: string;
+  last_name: string;
+  country: string;
+  city: string;
+  age: number;
 }
 
-interface PokemonResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: PokemonResult[];
+interface ApiResponse {
+  total: number;
+  limit: number;
+  offset: number;
+  items: User[];
 }
 
 @Component({
@@ -25,9 +28,7 @@ interface PokemonResponse {
 })
 export class TestTableComponent {
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   @ViewChild(DataTableDirective, {static: false})
   datatableElement!: DataTableDirective;
@@ -38,55 +39,67 @@ export class TestTableComponent {
     const that = this;
     this.dtOptions = {
       serverSide: true,
-      lengthChange: false,
-      pageLength: 25,
+      lengthChange: true,
+      pageLength: 15,
       ajax: (dataTablesParameters: any, callback) => {
         console.log(dataTablesParameters);
 
         let parsedParams = {
           limit: dataTablesParameters["length"],
           offset: dataTablesParameters["start"],
-          order_column: "",
-          order_direction: "",
-          search: dataTablesParameters["search"]["value"],
+          // order_column: "",
+          // order_direction: "",
+          // search: dataTablesParameters["search"]["value"],
         }
 
-        if (dataTablesParameters["order"].length > 0) {
-          let idx = dataTablesParameters["order"][0]["column"]
-          let dir = dataTablesParameters["order"][0]["dir"]
-          parsedParams.order_column = dataTablesParameters["columns"][idx]["data"];
-          parsedParams.order_direction = dir
-        }
+        // if (dataTablesParameters["order"].length > 0) {
+        //   let idx = dataTablesParameters["order"][0]["column"]
+        //   let dir = dataTablesParameters["order"][0]["dir"]
+        //   parsedParams.order_column = dataTablesParameters["columns"][idx]["data"];
+        //   parsedParams.order_direction = dir
+        // }
 
 
 
         console.log(parsedParams);
 
         that.http
-          .get<PokemonResponse>(
-            'https://pokeapi.co/api/v2/pokemon',
-            {
-              observe: 'body', // This ensures you are only interested in the response body.
-              params: parsedParams // Assuming `dataTablesParameters` is of the type `HttpParams`.
-            }
+          .post<ApiResponse>(
+            '/data',
+            dataTablesParameters
           ).subscribe(response => {
             console.log('Server response:', response);
             callback({
-              recordsTotal: response.count,
-              recordsFiltered: response.count,
-              data: response.results
+              recordsTotal: response.total,
+              recordsFiltered: response.limit,
+              data: response.items
             });
           });
 
             
       },
-      columns: [{
-        title: 'name',
-        data: 'name'
-      }, {
-        title: 'Link',
-        data: 'url'
-      }]
+      columns: [
+        {
+          title: 'first_name',
+          data: 'first_name'
+        }, 
+        {
+          title: 'last_name',
+          data: 'last_name'
+        }, 
+        {
+          title: 'country',
+          data: 'country'
+        }, 
+        {
+          title: 'city',
+          data: 'city'
+        }, 
+        {
+          title: 'age',
+          data: 'age'
+        }, 
+    ]
     };
   }
   
