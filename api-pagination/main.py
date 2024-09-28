@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from sqlalchemy import create_engine, func
 from sqlmodel import Session, col, select
+from sqlmodel import column
 
 from model import User
 
@@ -44,11 +45,31 @@ engine = create_engine("sqlite:///database.db")
 
 @app.post("/data")
 async def get_json_data(params: SearchRequestModel) -> Response:
-    print(params)
+    # print(params)
 
     query_base = select(User)                 # add there filtering of project    
-    query_filtered = query_base.where(User.first_name == "David")
+    
+    query_filtered = query_base
+
+    # filtering
+    for _column in params.columns:
+        if _column.searchable and len(_column.search.value) > 0:
+            query_filtered = query_filtered.where(column(_column.data).ilike(f"{_column.search.value}%"))
+
+    # ordering
+    orders = []
+    for _order in params.order:
+        column_idx = _order.column
+        column_name = params.columns[column_idx].data
+        if _order.dir == "asc":
+            orders.append(column(column_name).asc())
+        else:
+            orders.append(column(column_name).desc())
+    query_filtered = query_filtered.order_by(*orders)
+
     query_paginated = query_filtered.limit(params.length).offset(params.start)
+
+    # print(query_paginated)
 
     with Session(engine) as session:
         total = session.scalar(select(func.count()).select_from(query_base.subquery()))

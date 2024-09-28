@@ -44,29 +44,10 @@ export class TestTableComponent {
     this.dtOptions = {
       serverSide: true,
       lengthChange: false,
-      searching: false,
+      // searching: false,
       pageLength: 15,
       ajax: (dataTablesParameters: any, callback) => {
         console.log(dataTablesParameters);
-
-        let parsedParams = {
-          limit: dataTablesParameters["length"],
-          offset: dataTablesParameters["start"],
-          // order_column: "",
-          // order_direction: "",
-          // search: dataTablesParameters["search"]["value"],
-        }
-
-        // if (dataTablesParameters["order"].length > 0) {
-        //   let idx = dataTablesParameters["order"][0]["column"]
-        //   let dir = dataTablesParameters["order"][0]["dir"]
-        //   parsedParams.order_column = dataTablesParameters["columns"][idx]["data"];
-        //   parsedParams.order_direction = dir
-        // }
-
-
-
-        console.log(parsedParams);
 
         that.http
           .post<ApiResponse>(
@@ -118,12 +99,22 @@ export class TestTableComponent {
       dtInstance.columns().every(function () {
         const that = this;
         $('input', this.footer()).on('keyup change', function () {
-          const inputValue = $(this).val()?.toString();
-          if (inputValue && that.search() !== inputValue) {
-            that
-              .search(inputValue)
-              .draw();
-          }
+          clearTimeout($.data(this, 'timer'));
+
+          var waitTime = 500;  // 500ms debounce time
+          var self = this;
+          
+          var timer = setTimeout(function () {
+            let inputValue = $(self).val()?.toString();
+            inputValue = inputValue ? inputValue : "";
+            if (that.search() !== inputValue) {
+              that
+                .search(inputValue)
+                .draw();
+            }
+          }, waitTime);
+    
+          $.data(this, 'timer', timer);
         });
       });
     });
