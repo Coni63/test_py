@@ -1,6 +1,7 @@
 <table datatable  [dtOptions]="dtOptions" class="row-border hover">
     <thead>
       <tr>
+        <th>id</th>
         <th>first_name</th>
         <th>last_name</th>
         <th>country</th>
@@ -11,10 +12,15 @@
     <tbody>
       
     </tbody>
-    <!-- <tfoot>
+    <tfoot>
         <tr>
-          <th><input type="text" placeholder="Search ID" name="search-name"/></th>
-          <th><input type="text" placeholder="Search first name" name="search-url"/></th>
+          <th><input type="number" placeholder="Search ID" name="search-id"/></th>
+          <th><input type="text" placeholder="Search firstname" name="search-first_name"/></th>
+          <th><input type="text" placeholder="Search lastname" name="search-last_name"/></th>
+          <th><input type="text" placeholder="Search country" name="search-country"/></th>
+          <th><input type="text" placeholder="Search city" name="search-city"/></th>
+          <!-- <th><input type="number" placeholder="Search age" name="search-age"/></th> -->
+           <th></th>
         </tr>
-      </tfoot> -->
+    </tfoot>
   </table>

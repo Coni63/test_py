@@ -1,15 +1,8 @@
-from typing import Any
+from typing import Optional
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-import json
-from pydantic import BaseModel
-from fastapi_pagination import Page, add_pagination, paginate, LimitOffsetPage
-from fastapi_pagination.customization import (
-    CustomizedPage,
-    UseParamsFields,
-)
-from sqlalchemy import create_engine
-from sqlmodel import Session, select
+from pydantic import BaseModel, Field
+from sqlalchemy import create_engine, func
+from sqlmodel import Session, col, select
 
 from model import User
 
@@ -31,21 +24,20 @@ class OrderModel(BaseModel):
     name: str = ""
 
 class SearchRequestModel(BaseModel):
-    draw: int
-    columns: list[ColumnModel]
-    order: list[OrderModel]
-    start: int
-    length: int
-    search: SearchModel
+    draw: int = 0
+    columns: list[ColumnModel] = Field(default_factory=list)
+    order: list[OrderModel] = Field(default_factory=list)
+    start: int = 0
+    length: Optional[int] = None
+    search: Optional[SearchModel] = None
 
 class Response(BaseModel):
     items: list[User]
-    total: int
-    filtered: int
+    total: int      # number of record total before filtering
+    filtered: int   # number of match before pagination
 
 
 app = FastAPI()
-add_pagination(app)
 
 engine = create_engine("sqlite:///database.db")  
 
@@ -54,12 +46,16 @@ engine = create_engine("sqlite:///database.db")
 async def get_json_data(params: SearchRequestModel) -> Response:
     print(params)
 
-    query = select(User).limit(params.length).offset(params.start)
+    query_base = select(User)                 # add there filtering of project    
+    query_filtered = query_base.where(User.first_name == "David")
+    query_paginated = query_filtered.limit(params.length).offset(params.start)
 
     with Session(engine) as session:
-        items = session.exec(query).all()
+        total = session.scalar(select(func.count()).select_from(query_base.subquery()))
+        filtered = session.scalar(select(func.count()).select_from(query_filtered.subquery()))
+        items = session.exec(query_paginated).all()
 
-    return Response(items=items, total=1000, filtered=150)
+    return Response(items=items, total=total, filtered=filtered)
 
 
 # poetry run uvicorn main:app --reload

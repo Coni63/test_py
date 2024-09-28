@@ -4,7 +4,11 @@ import { DataTableDirective, DataTablesModule } from "angular-datatables";
 import { Config } from 'datatables.net';
 import { error } from 'jquery';
 
+// https://l-lin.github.io/angular-datatables/#/advanced/individual-column-filtering
+// https://datatables.net/
+
 interface User {
+  id: number;
   first_name: string;
   last_name: string;
   country: string;
@@ -39,7 +43,8 @@ export class TestTableComponent {
     const that = this;
     this.dtOptions = {
       serverSide: true,
-      lengthChange: true,
+      lengthChange: false,
+      searching: false,
       pageLength: 15,
       ajax: (dataTablesParameters: any, callback) => {
         console.log(dataTablesParameters);
@@ -80,6 +85,10 @@ export class TestTableComponent {
       },
       columns: [
         {
+          title: 'id',
+          data: 'id'
+        }, 
+        {
           title: 'first_name',
           data: 'first_name'
         }, 
@@ -104,19 +113,20 @@ export class TestTableComponent {
   }
   
 
-  // ngAfterViewInit(): void {
-  //   this.datatableElement.dtInstance.then(dtInstance => {
-  //     dtInstance.columns().every(function () {
-  //       const that = this;
-  //       $('input', this.footer()).on('keyup change', function () {
-  //         if (that.search() !== this['value']) {
-  //           that
-  //             .search(this['value'])
-  //             .draw();
-  //         }
-  //       });
-  //     });
-  //   });
-  // }
+  ngAfterViewInit(): void {
+    this.datatableElement.dtInstance.then(dtInstance => {
+      dtInstance.columns().every(function () {
+        const that = this;
+        $('input', this.footer()).on('keyup change', function () {
+          const inputValue = $(this).val()?.toString();
+          if (inputValue && that.search() !== inputValue) {
+            that
+              .search(inputValue)
+              .draw();
+          }
+        });
+      });
+    });
+  }
 
 }
