@@ -55,16 +55,25 @@ async def get_json_data(params: SearchRequestModel) -> Response:
     for _column in params.columns:
         if _column.searchable and len(_column.search.value) > 0:
             query_filtered = query_filtered.where(column(_column.data).ilike(f"{_column.search.value}%"))
+    
+    # global search
+    # if params.search.value:
+    #     for _column in params.columns:
+    #         if _column.searchable:
+    #             query_filtered = query_filtered.where(column(_column.data).ilike(f"{params.search.value}%"))
 
     # ordering
     orders = []
     for _order in params.order:
-        column_idx = _order.column
-        column_name = params.columns[column_idx].data
+        _column = params.columns[_order.column]
+
+        if not _column.orderable:
+            continue
+
         if _order.dir == "asc":
-            orders.append(column(column_name).asc())
+            orders.append(column(_column.data).asc())
         else:
-            orders.append(column(column_name).desc())
+            orders.append(column(_column.data).desc())
     query_filtered = query_filtered.order_by(*orders)
 
     query_paginated = query_filtered.limit(params.length).offset(params.start)

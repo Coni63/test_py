@@ -44,8 +44,18 @@ export class TestTableComponent {
     this.dtOptions = {
       serverSide: true,
       lengthChange: false,
-      // searching: false,
+      searching: true,
+      orderMulti: true,
+      processing: true,
       pageLength: 15,
+      // dom: 'lrtip',
+      layout: {
+        topStart: null,
+        topEnd: null,
+        bottomStart: 'info',
+        bottomEnd: 'paging'
+      },
+      
       ajax: (dataTablesParameters: any, callback) => {
         console.log(dataTablesParameters);
 
