@@ -13,6 +13,7 @@ uvicorn = "^0.30.6"
 fastapi-pagination = "^0.12.27"
 faker = "^30.0.0"
 pydantic = "^2.9.2"
+sqlmodel = "^0.0.22"
 
 
 [build-system]

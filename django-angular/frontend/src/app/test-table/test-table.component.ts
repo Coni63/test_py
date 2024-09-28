@@ -14,7 +14,7 @@ interface User {
 
 interface ApiResponse {
   total: number;
-  limit: number;
+  filtered: number;
   offset: number;
   items: User[];
 }
@@ -71,7 +71,7 @@ export class TestTableComponent {
             console.log('Server response:', response);
             callback({
               recordsTotal: response.total,
-              recordsFiltered: response.limit,
+              recordsFiltered: response.filtered,
               data: response.items
             });
           });

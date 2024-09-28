@@ -1,3 +1,4 @@
+from typing import Any
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 import json
@@ -7,14 +8,10 @@ from fastapi_pagination.customization import (
     CustomizedPage,
     UseParamsFields,
 )
+from sqlalchemy import create_engine
+from sqlmodel import Session, select
 
-class User(BaseModel):
-    first_name: str
-    last_name: str
-    country: str
-    city: str
-    age: int
-
+from model import User
 
 class SearchModel(BaseModel):
     value: str
@@ -41,21 +38,28 @@ class SearchRequestModel(BaseModel):
     length: int
     search: SearchModel
 
+class Response(BaseModel):
+    items: list[User]
+    total: int
+    filtered: int
+
 
 app = FastAPI()
 add_pagination(app)
 
+engine = create_engine("sqlite:///database.db")  
+
 
 @app.post("/data")
-async def get_json_data(params: SearchRequestModel) -> CustomizedPage[LimitOffsetPage[User], UseParamsFields(limit=10)]:
+async def get_json_data(params: SearchRequestModel) -> Response:
     print(params)
 
-    with open("data.json", "r") as file:
-        data = json.load(file)
-    
-    data = [User.model_validate(x) for x in data]
+    query = select(User).limit(params.length).offset(params.start)
 
-    return paginate(data)
+    with Session(engine) as session:
+        items = session.exec(query).all()
+
+    return Response(items=items, total=1000, filtered=150)
 
 
 # poetry run uvicorn main:app --reload
