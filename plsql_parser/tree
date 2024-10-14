@@ -1,0 +1,51 @@
+(
+    sql_script (
+        unit_statement (
+            create_procedure_body CREATE OR REPLACE PROCEDURE (
+                procedure_name (
+                    identifier (
+                        id_expression (
+                            regular_id proc_A
+                        )
+                    )
+                )
+            ) IS (
+                body BEGIN (
+                    seq_of_statements (
+                        statement (
+                            call_statement (
+                                routine_name (
+                                    identifier (
+                                        id_expression (
+                                            regular_id proc_B
+                                        )
+                                    )
+                                )
+                            ) 
+                            (
+                                function_argument ( )
+                            )
+                        )
+                    ) ; (
+                        statement (
+                            call_statement (
+                                routine_name (
+                                    identifier (
+                                        id_expression (
+                                            regular_id some_func
+                                        )
+                                    )
+                                )
+                            ) 
+                            (
+                                function_argument ( )
+                            )
+                        )
+                    ) ;
+                ) 
+            END)
+        )
+    ) ; 
+    (unit_statement (create_procedure_body CREATE OR REPLACE PROCEDURE (procedure_name (identifier (id_expression (regular_id proc_B)))) IS (body 
+BEGIN (seq_of_statements (statement (call_statement (routine_name (identifier (id_expression (regular_id another_func)))) (function_argument ( )))) ; (statement (call_statement (routine_name (identifier (id_expression (regular_id update_test_table_func)))) (function_argument ( )))) ;) 
+END))) ; (unit_statement (create_function_body CREATE OR REPLACE FUNCTION (function_name (identifier (id_expression (regular_id update_test_table_func)))) RETURN (type_spec (datatype (native_datatype_element VARCHAR2))) IS (body BEGIN (seq_of_statements (statement (return_statement RETURN (expression (logical_expression (unary_logical_expression (multiset_expression (relational_expression (compound_expression (concatenation (model_expression (unary_expression (atom (constant (quoted_string 'Table updated successfully')))))))))))))) ;) END))) ; <EOF>)

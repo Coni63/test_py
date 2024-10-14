@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "plsql-parser"
+version = "0.1.0"
+description = ""
+authors = ["Nicolas M. <mine.nicolas@gmail.com>"]
+readme = "README.md"
+packages = [{include = "plsql_parser"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+antlr4-python3-runtime = "^4.13.2"
+antlr4-tools = "^0.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
