@@ -48,12 +48,13 @@ END;
 
 CREATE OR REPLACE PROCEDURE proc_B IS
 BEGIN
-   another_func();       -- Function call
+   "App"."Module".another_func();       -- Function call
    update_test_table_func();  -- Function call
 END;
 
 CREATE OR REPLACE FUNCTION update_test_table_func RETURN VARCHAR2 IS
 BEGIN
+   UPDATE myTable SET name='toto' WHERE id = 42;
    RETURN 'Table updated successfully';
 END;
 """
