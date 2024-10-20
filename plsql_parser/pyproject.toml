@@ -12,6 +12,9 @@ antlr4-python3-runtime = "^4.13.2"
 antlr4-tools = "^0.2.1"
 pydantic = "^2.9.2"
 ipykernel = "^6.29.5"
+networkx = "^3.4.1"
+matplotlib = "^3.9.2"
+scipy = "^1.14.1"
 
 
 [build-system]
