@@ -98,6 +98,23 @@ def extract_tables(plsql_function: str) -> list[str]:
     
     return sorted(list(tables))
 
+def export_to_excel(all_procedures: list[dict], filename: str):
+    import pandas as pd
+
+    df = pd.DataFrame(all_procedures).drop(columns=["body"])
+
+    a = df[["name", "type", "has_begin_end", "calls"]].explode("calls").assign(target_type="FUNCTION_OR_PROC").dropna(subset=["calls"], axis=0)
+    b = df[["name", "type", "has_begin_end", "tables"]].explode("tables").assign(target_type="TABLE").dropna(subset=["tables"], axis=0)
+
+    c = pd.concat([a, b]).rename({
+        "name": "source_node",
+        "type": "source_type",
+    })
+
+    c["target_node"] = c["calls"].fillna(c["tables"]).drop(columns=["calls", "tables"])
+
+    c.to_excel(filename)
+
 def prune_and_convert_to_graph(all_procedures: list[dict]) -> list[dict]:
     package_function = {x["name"] for x in all_procedures}
     
@@ -167,6 +184,8 @@ def main():
             print(package_name, "OK")
         except Exception as e:
             print(package_name, f"FAIL: {e}")
+
+    export_to_excel(all_procedures, "graphe.xlsx")
 
     filtered_procedures = prune_and_convert_to_graph(all_procedures)
     plot_dependency_graph(filtered_procedures)
