@@ -1,0 +1,2 @@
+ssl.keystore.password=password
+ssl.truststore.password=password
