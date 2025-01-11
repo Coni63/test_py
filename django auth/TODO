@@ -4,3 +4,6 @@ poetry run python runserver
 go to http://localhost:8000/accounts/login/
 login with keycloak
 go to http://localhost:8000/users/
+
+
+python manage.py create_tenant

@@ -30,7 +30,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+SHARED_APPS = [
+    'django_tenants',  # mandatory
+    'users', # you must list the app where your tenant model resides in
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -41,11 +44,19 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.openid_connect',
-    "rest_framework",
-    "users",
+    "rest_framework"
 ]
 
+TENANT_APPS = [
+    # your tenant-specific apps
+    "myapp",
+]
+
+INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
+
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',  # must be
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -88,12 +99,15 @@ WSGI_APPLICATION = "authest.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': 'authest',                      
+        'USER': 'postgres_user',
+        'PASSWORD': 'postgres_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -136,10 +150,14 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# https://django-oauth-toolkit.readthedocs.io/en/latest/rest-framework/getting_started.html#step-1-minimal-setup
 
 AUTH_USER_MODEL = "users.User"
 
+TENANT_MODEL = "users.Client"
+TENANT_DOMAIN_MODEL = "users.Domain"
+
+# https://www.keycloak.org/getting-started/getting-started-docker
+# http://localhost:8080/admin/master/console/#/authest/clients/3bd3c8ab-f87c-4a00-8e3f-70b975413839/settings
 SOCIALACCOUNT_PROVIDERS = {
     "openid_connect": {
         "APPS": [
@@ -164,3 +182,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)

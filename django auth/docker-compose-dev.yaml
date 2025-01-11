@@ -11,7 +11,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres_password
       - POSTGRES_USER=postgres_user
-      - POSTGRES_DB=multitaskill
+      - POSTGRES_DB=authest
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.7
