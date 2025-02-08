@@ -39,9 +39,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-SHARED_APPS = [
-    # 'django_tenants',  # mandatory
-    'users', # you must list the app where your tenant model resides in
+INSTALLED_APPS = [
 
     "django.contrib.admin",
     "django.contrib.auth",
@@ -58,6 +56,8 @@ SHARED_APPS = [
     'dj_rest_auth',
     'rest_framework.authtoken',
     'mozilla_django_oidc',
+    'users',
+    "myapp",
 ]
 
 TENANT_APPS = [
@@ -65,7 +65,7 @@ TENANT_APPS = [
     "myapp",
 ]
 
-INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
+# INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 
 MIDDLEWARE = [
@@ -201,7 +201,8 @@ SITE_ID = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'mozilla_django_oidc.contrib.drf.OIDCAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
         # "dj_rest_auth.authentication.AllAuthJWTAuthentication",
@@ -228,68 +229,17 @@ OIDC_OP_AUTHORIZATION_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-
 OIDC_OP_TOKEN_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-connect/token"
 OIDC_OP_USER_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-connect/userinfo"
 
+# Required for client authentication
+OIDC_RP_SIGN_ALGO = "RS256"  # Match Keycloak's signing algorithm
+OIDC_CLIENT_AUTH_METHOD = "client_secret_post"  # or "client_secret_basic"
+
+# Required for client authentication
+OIDC_RP_SIGN_ALGO = "RS256"  # Match Keycloak's signing algorithm
+OIDC_CLIENT_AUTH_METHOD = "client_secret_post"  # or "client_secret_basic"
+
+# Scopes to request (ensure "openid" is included)
+OIDC_RP_SCOPES = "openid profile email"
+
 # Optional settings
 OIDC_CREATE_USER = True
 OIDC_VERIFY_SSL = False  # Set to True in production
-
-SIMPLE_JWT = {
-    "ALGORITHM": "RS256",
-    "SIGNING_KEY": None,  # We will get the public key dynamically
-    "VERIFYING_KEY": None,
-    "ISSUER": "http://pi5:8080/realms/master",
-    "AUTH_HEADER_TYPES": ("Bearer",),
-    "USER_ID_FIELD": "sub",
-    "USER_ID_CLAIM": "sub",
-    "AUDIENCE": "account"
-}
-
-
-def get_keycloak_public_key():
-    response = requests.get(OIDC_OP_JWKS_ENDPOINT)
-    if response.status_code == 200:
-        jwks = response.json()
-        if "keys" in jwks and len(jwks["keys"]) > 0:
-            key = jwks["keys"][0]  # First key in the list
-            if key["kty"] == "RSA":
-                # Decode "n" and "e" values
-                n = int.from_bytes(base64.urlsafe_b64decode(key["n"] + "=="), "big")
-                e = int.from_bytes(base64.urlsafe_b64decode(key["e"] + "=="), "big")
-
-                # Create RSA public key
-                public_key = rsa.RSAPublicNumbers(e, n).public_key(default_backend())
-
-                # Convert to PEM format
-                pem_key = public_key.public_bytes(
-                    encoding=serialization.Encoding.PEM,
-                    format=serialization.PublicFormat.SubjectPublicKeyInfo,
-                )
-                return pem_key.decode("utf-8")
-
-    return None  # If no valid key is found
-
-SIMPLE_JWT["VERIFYING_KEY"] = get_keycloak_public_key()
-
-
-print("Django Key:", SIMPLE_JWT["VERIFYING_KEY"])
-
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["console"],
-#             "level": "DEBUG",
-#             "propagate": True,
-#         },
-#         "rest_framework": {
-#             "handlers": ["console"],
-#             "level": "DEBUG",
-#             "propagate": False,
-#         },
-#     },
-# }
