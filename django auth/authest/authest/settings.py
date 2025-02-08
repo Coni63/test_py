@@ -10,7 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import base64
+from datetime import timedelta
 from pathlib import Path
+
+import requests
+import json
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +40,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 SHARED_APPS = [
-    'django_tenants',  # mandatory
+    # 'django_tenants',  # mandatory
     'users', # you must list the app where your tenant model resides in
 
     "django.contrib.admin",
@@ -44,7 +53,11 @@ SHARED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.openid_connect',
-    "rest_framework"
+    "rest_framework",
+    'rest_framework_simplejwt',
+    'dj_rest_auth',
+    'rest_framework.authtoken',
+    'mozilla_django_oidc',
 ]
 
 TENANT_APPS = [
@@ -56,7 +69,7 @@ INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_
 
 
 MIDDLEWARE = [
-    'django_tenants.middleware.main.TenantMainMiddleware',  # must be
+    # 'django_tenants.middleware.main.TenantMainMiddleware',  # must be
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -71,7 +84,9 @@ MIDDLEWARE = [
 # https://medium.com/@robertjosephk/setting-up-keycloak-in-django-with-django-allauth-cfc84fdbfee2
 # https://www.linkedin.com/pulse/setting-up-keycloak-django-django-allauth-robert-joseph-kalapurackal-oy4xc/
 AUTHENTICATION_BACKENDS = [
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
+    # 'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = "authest.urls"
@@ -98,14 +113,21 @@ WSGI_APPLICATION = "authest.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django_tenants.postgresql_backend',
+#         'NAME': 'authest',                      
+#         'USER': 'postgres_user',
+#         'PASSWORD': 'postgres_password',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'authest',                      
-        'USER': 'postgres_user',
-        'PASSWORD': 'postgres_password',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -164,25 +186,110 @@ SOCIALACCOUNT_PROVIDERS = {
             {
                 "provider_id": "keycloak",
                 "name": "Keycloak",
-                "client_id": "myclient",
-                "secret": "LWojpAu4EfClwvxXL31wQ0jduayz8lqm",  # from docker Keycloak -- not prod 
+                "client_id": "my-backend-app",
+                "secret": "dKBGsoVz9ER5U4GGGk3MXoqpFHohYIpM",  # from docker Keycloak -- not prod 
                 "settings": {
-                    "server_url": "http://localhost:8080/realms/authest/.well-known/openid-configuration",
+                    "server_url": "http://pi5:8080/realms/master/.well-known/openid-configuration",
                 },
             }
         ]
     }
 } 
 
+SITE_ID = 1
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        # "dj_rest_auth.authentication.AllAuthJWTAuthentication",
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
 }
 
-DATABASE_ROUTERS = (
-    'django_tenants.routers.TenantSyncRouter',
-)
+# DATABASE_ROUTERS = (
+#     'django_tenants.routers.TenantSyncRouter',
+# )
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+}
+
+OIDC_RP_CLIENT_ID = "my-backend-app"
+OIDC_RP_CLIENT_SECRET = "dKBGsoVz9ER5U4GGGk3MXoqpFHohYIpM"
+OIDC_OP_JWKS_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-connect/certs"
+OIDC_OP_AUTHORIZATION_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-connect/auth"
+OIDC_OP_TOKEN_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-connect/token"
+OIDC_OP_USER_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-connect/userinfo"
+
+# Optional settings
+OIDC_CREATE_USER = True
+OIDC_VERIFY_SSL = False  # Set to True in production
+
+SIMPLE_JWT = {
+    "ALGORITHM": "RS256",
+    "SIGNING_KEY": None,  # We will get the public key dynamically
+    "VERIFYING_KEY": None,
+    "ISSUER": "http://pi5:8080/realms/master",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "sub",
+    "USER_ID_CLAIM": "sub",
+    "AUDIENCE": "account"
+}
+
+
+def get_keycloak_public_key():
+    response = requests.get(OIDC_OP_JWKS_ENDPOINT)
+    if response.status_code == 200:
+        jwks = response.json()
+        if "keys" in jwks and len(jwks["keys"]) > 0:
+            key = jwks["keys"][0]  # First key in the list
+            if key["kty"] == "RSA":
+                # Decode "n" and "e" values
+                n = int.from_bytes(base64.urlsafe_b64decode(key["n"] + "=="), "big")
+                e = int.from_bytes(base64.urlsafe_b64decode(key["e"] + "=="), "big")
+
+                # Create RSA public key
+                public_key = rsa.RSAPublicNumbers(e, n).public_key(default_backend())
+
+                # Convert to PEM format
+                pem_key = public_key.public_bytes(
+                    encoding=serialization.Encoding.PEM,
+                    format=serialization.PublicFormat.SubjectPublicKeyInfo,
+                )
+                return pem_key.decode("utf-8")
+
+    return None  # If no valid key is found
+
+SIMPLE_JWT["VERIFYING_KEY"] = get_keycloak_public_key()
+
+
+print("Django Key:", SIMPLE_JWT["VERIFYING_KEY"])
+
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#         "rest_framework": {
+#             "handlers": ["console"],
+#             "level": "DEBUG",
+#             "propagate": False,
+#         },
+#     },
+# }

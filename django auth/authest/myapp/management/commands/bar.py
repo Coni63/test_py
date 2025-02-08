@@ -1,0 +1,19 @@
+from django.core.management.base import BaseCommand, CommandError
+import requests
+
+
+class Command(BaseCommand):
+    help = "Test"
+
+    def handle(self, *args, **options):
+        from rest_framework_simplejwt.authentication import JWTAuthentication
+
+        access_token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJnNjdrTnNzU2dqRXR3OHZmQkpQQ1JsS2Y2d1BrN1BBamZJUjlnMzR4STM4In0.eyJleHAiOjE3MzkwMzczNTgsImlhdCI6MTczOTAzNzI5OCwianRpIjoiMDU2ZTE4Y2QtMzI0OS00OTQ5LWI0ODYtZWFkOWRlOWEzYzIwIiwiaXNzIjoiaHR0cDovL3BpNTo4MDgwL3JlYWxtcy9tYXN0ZXIiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMDU5Y2VlOGQtMDc1My00Y2IwLTljZDItZjYyMjg0ZmIwNzVhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibXktYmFja2VuZC1hcHAiLCJzaWQiOiJkZWY1ZTc3MC04ZWQwLTQ5OGItODA1YS04ZWU5ZDNkZGQ2YWIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW1hc3RlciIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6ImZpcnN0bmFtZSBsYXN0bmFtZSIsInByZWZlcnJlZF91c2VybmFtZSI6InRlc3R1c2VyIiwiZ2l2ZW5fbmFtZSI6ImZpcnN0bmFtZSIsImZhbWlseV9uYW1lIjoibGFzdG5hbWUiLCJlbWFpbCI6InRlc3R1c2VyQGZvby5jb20ifQ.o1IQ2BKg4yCzTdxZtkyPBpQgDvzFAx6WXxQS7XTREmNKrl-Ap7mfA6PBY6_a5QVGvWUdPxx58ARHHAdHXmtip82epWOObW7WLeZmy_MLyokhrJRJfgdifU3I2bT7W35KQj3UT83g2sScUHS8bnPdJtU8ffBbPXKWXN14Syrl7BhQKngc7IhE-Rlj2MJcdZK6A_ucd3zbeWETXN_XSgXyla7fkGWk6qjBZUreRs1RhJt-JnZ-dp4qYBrPfXrLCLkQqrH1hp3h8I5GUrjqVxyuHw8Fch8HTZCee4f-_qmGOPiD237XpWAJ0LeDCZJMqtI6ZrGYpS_qnySs7OVHPVJ7JA"
+
+        auth = JWTAuthentication()
+        header = f"Bearer {access_token}"
+        token = header.split()[1]  # Remove "Bearer "
+        user, validated_token = auth.authenticate_token(token)
+
+        print("Authenticated User:", user)
+        print("Token Data:", validated_token)

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth.models import Group
+from myapp.views import DebugView
 from users.models import User
 
 admin.autodiscover()
@@ -55,7 +56,9 @@ class GroupList(generics.ListAPIView):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('auth/', include('mozilla_django_oidc.urls')),
     path('users/', UserList.as_view(), name="all_users"),
     path('users/<pk>/', UserDetails.as_view(), name="user-details"),
     path('groups/', GroupList.as_view(), name="groups"),
+    path('debug/', DebugView.as_view(), name="debug"),
 ]
