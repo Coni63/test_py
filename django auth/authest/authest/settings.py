@@ -84,7 +84,8 @@ MIDDLEWARE = [
 # https://medium.com/@robertjosephk/setting-up-keycloak-in-django-with-django-allauth-cfc84fdbfee2
 # https://www.linkedin.com/pulse/setting-up-keycloak-django-django-allauth-robert-joseph-kalapurackal-oy4xc/
 AUTHENTICATION_BACKENDS = [
-    "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
+    "authest.auth_backend.CustomOIDCBackend",
+    # "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
     # 'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -216,11 +217,6 @@ REST_FRAMEWORK = {
 #     'django_tenants.routers.TenantSyncRouter',
 # )
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": True,
-}
 
 OIDC_RP_CLIENT_ID = "my-backend-app"
 OIDC_RP_CLIENT_SECRET = "dKBGsoVz9ER5U4GGGk3MXoqpFHohYIpM"
@@ -233,12 +229,8 @@ OIDC_OP_USER_ENDPOINT = "http://pi5:8080/realms/master/protocol/openid-connect/u
 OIDC_RP_SIGN_ALGO = "RS256"  # Match Keycloak's signing algorithm
 OIDC_CLIENT_AUTH_METHOD = "client_secret_post"  # or "client_secret_basic"
 
-# Required for client authentication
-OIDC_RP_SIGN_ALGO = "RS256"  # Match Keycloak's signing algorithm
-OIDC_CLIENT_AUTH_METHOD = "client_secret_post"  # or "client_secret_basic"
-
 # Scopes to request (ensure "openid" is included)
-OIDC_RP_SCOPES = "openid profile email"
+OIDC_RP_SCOPES = "openid"
 
 # Optional settings
 OIDC_CREATE_USER = True
