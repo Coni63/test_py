@@ -4,14 +4,16 @@ import { UnauthorizedComponent } from './unauthorized-component/unauthorized-com
 import { AuthorizedComponent } from './authorized-component/authorized-component.component';
 import { LayoutComponent } from './layout/layout.component';
 import { TestTableComponent } from './test-table/test-table.component';
+import { TestAngularComponent } from './test-angular/test-angular.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent },
-    { path: 'logout', component: HomeComponent },
-    { path: 'unauthorized', component: UnauthorizedComponent },
-    { path: 'forbidden', component: UnauthorizedComponent },
-    { path: 'authorized', component: AuthorizedComponent },
-    { path: 'test', component: LayoutComponent },
-    { path: 'table', component: TestTableComponent },
+    // { path: '', redirectTo: 'home', pathMatch: 'full' },
+    // { path: 'home', component: HomeComponent },
+    // { path: 'logout', component: HomeComponent },
+    // { path: 'unauthorized', component: UnauthorizedComponent },
+    // { path: 'forbidden', component: UnauthorizedComponent },
+    // { path: 'authorized', component: AuthorizedComponent },
+    // { path: 'test', component: LayoutComponent },
+    // { path: 'table', component: TestTableComponent },
+    { path: '', component: TestAngularComponent },
 ];
