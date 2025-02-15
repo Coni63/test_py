@@ -6,6 +6,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor, LogLevel, provideAuth } from 'angular-auth-oidc-client';
 import { loggingInterceptor } from '../logging-interceptor';
 import { customAuthInterceptor } from '../auth-interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 export const appConfig: ApplicationConfig = {
@@ -33,6 +34,6 @@ export const appConfig: ApplicationConfig = {
         historyCleanupOff: true,
         secureRoutes: ['/'],
       },
-    }),
+    }), provideAnimationsAsync(), provideAnimationsAsync(),
   ] 
 };

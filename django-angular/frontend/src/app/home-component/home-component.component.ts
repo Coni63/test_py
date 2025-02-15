@@ -5,11 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './home-component.component.html',
-  styleUrl: './home-component.component.scss'
+    selector: 'app-home',
+    imports: [CommonModule],
+    templateUrl: './home-component.component.html',
+    styleUrl: './home-component.component.scss'
 })
 export class HomeComponent implements OnInit {
   private readonly oidcSecurityService = inject(OidcSecurityService);

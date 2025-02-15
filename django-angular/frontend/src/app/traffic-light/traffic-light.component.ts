@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-traffic-light',
-  standalone: true,
-  imports: [],
-  templateUrl: './traffic-light.component.html',
-  styleUrl: './traffic-light.component.scss'
+    selector: 'app-traffic-light',
+    imports: [],
+    templateUrl: './traffic-light.component.html',
+    styleUrl: './traffic-light.component.scss'
 })
 export class TrafficLightComponent {
   @Input() set status(status: string) {

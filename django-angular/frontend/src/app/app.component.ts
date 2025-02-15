@@ -4,13 +4,13 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [
+        RouterOutlet,
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
+    standalone: true,
 })
 export class AppComponent implements OnInit {
   private readonly oidcSecurityService = inject(OidcSecurityService);

@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { TrafficLightComponent } from '../traffic-light/traffic-light.component';
 
 @Component({
-  selector: 'app-layout',
-  standalone: true,
-  imports: [TrafficLightComponent],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+    selector: 'app-layout',
+    imports: [TrafficLightComponent],
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
   visible: boolean = true;
