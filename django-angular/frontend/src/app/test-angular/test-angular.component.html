@@ -24,14 +24,14 @@
 
     <mat-form-field>
       <mat-label>Date After</mat-label>
-      <input matInput [matDatepicker]="dateAfterPicker" formControlName="date_after">
+      <input matInput [matDatepicker]="dateAfterPicker" formControlName="date_after" (dateChange)="updateDate('date_after', $event.value)">
       <mat-datepicker-toggle matSuffix [for]="dateAfterPicker"></mat-datepicker-toggle>
       <mat-datepicker #dateAfterPicker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Date Before</mat-label>
-      <input matInput [matDatepicker]="dateBeforePicker" formControlName="date_before">
+      <input matInput [matDatepicker]="dateBeforePicker" formControlName="date_before" (dateChange)="updateDate('date_after', $event.value)">
       <mat-datepicker-toggle matSuffix [for]="dateBeforePicker"></mat-datepicker-toggle>
       <mat-datepicker #dateBeforePicker></mat-datepicker>
     </mat-form-field>

@@ -7,6 +7,8 @@ import { authInterceptor, LogLevel, provideAuth } from 'angular-auth-oidc-client
 import { loggingInterceptor } from '../logging-interceptor';
 import { customAuthInterceptor } from '../auth-interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MY_DATE_FORMATS } from './test-angular/date-format';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 
 export const appConfig: ApplicationConfig = {
@@ -35,5 +37,6 @@ export const appConfig: ApplicationConfig = {
         secureRoutes: ['/'],
       },
     }), provideAnimationsAsync(), provideAnimationsAsync(),
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   ] 
 };

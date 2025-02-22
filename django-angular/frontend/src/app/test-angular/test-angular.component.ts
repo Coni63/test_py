@@ -22,6 +22,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { TestData } from './test.interface';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
+import moment from 'moment';
 
 @Component({
     selector: 'app-test-angular',
@@ -121,5 +122,12 @@ export class TestAngularComponent {
   
     onPageChange() {
       this.loadData();
+    }
+
+    updateDate(field: string, value: Date | null) {
+      if (value) {
+        const formattedDate = moment(value).format('YYYY-MM-DD'); // Convert to 'YYYY-MM-DD'
+        this.filterForm.get(field)?.setValue(formattedDate);
+      }
     }
 }

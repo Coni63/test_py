@@ -27,6 +27,7 @@
     "datatables.net": "^2.1.7",
     "datatables.net-dt": "^2.1.7",
     "jquery": "^3.7.1",
+    "moment": "^2.30.1",
     "rxjs": "~7.8.0",
     "testapp": "file:",
     "tslib": "^2.3.0",
