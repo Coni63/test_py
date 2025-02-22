@@ -1,9 +1,119 @@
-<p>test-angular works!</p>
+<!-- 
+ <p>test-angular works!</p>
 <mat-slide-toggle>Toggle me!</mat-slide-toggle>
 
 <div class="example-button-container">
-    <button mat-fab extended>
-      <mat-icon>favorite</mat-icon>
-      Basic
-    </button>
+  <button mat-fab extended>
+    <mat-icon>favorite</mat-icon>
+    Basic
+  </button>
+</div>
+-->
+<!-- test-data.component.html -->
+<div class="mat-elevation-z8">
+  <!-- Filters -->
+  <form [formGroup]="filterForm" class="filters-container">
+    <mat-form-field>
+      <mat-label>Text Search</mat-label>
+      <input matInput formControlName="text">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date After</mat-label>
+      <input matInput [matDatepicker]="dateAfterPicker" formControlName="date_after">
+      <mat-datepicker-toggle matSuffix [for]="dateAfterPicker"></mat-datepicker-toggle>
+      <mat-datepicker #dateAfterPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date Before</mat-label>
+      <input matInput [matDatepicker]="dateBeforePicker" formControlName="date_before">
+      <mat-datepicker-toggle matSuffix [for]="dateBeforePicker"></mat-datepicker-toggle>
+      <mat-datepicker #dateBeforePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Boolean</mat-label>
+      <mat-select formControlName="bool">
+        <mat-option [value]="''">All</mat-option>
+        <mat-option [value]="true">True</mat-option>
+        <mat-option [value]="false">False</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="number-filters">
+      <mat-form-field>
+        <mat-label>Number Min</mat-label>
+        <input matInput type="number" formControlName="number_min">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Number Max</mat-label>
+        <input matInput type="number" formControlName="number_max">
+      </mat-form-field>
+    </div>
+
+    <div class="float-filters">
+      <mat-form-field>
+        <mat-label>Float Min</mat-label>
+        <input matInput type="number" step="0.01" formControlName="float_min">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Float Max</mat-label>
+        <input matInput type="number" step="0.01" formControlName="float_max">
+      </mat-form-field>
+    </div>
+  </form>
+
+  <!-- Records info -->
+  <div class="records-info">
+    <span>Total Records: {{totalRecords}}</span>
+    <span>Matching Records: {{matchingRecords}}</span>
   </div>
+
+  <!-- Table -->
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange()">
+    <!-- Text Column -->
+    <ng-container matColumnDef="text">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Text </th>
+      <td mat-cell *matCellDef="let row"> {{row.text}} </td>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let row"> {{row.date | date}} </td>
+    </ng-container>
+
+    <!-- Boolean Column -->
+    <ng-container matColumnDef="bool">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Boolean </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-icon>{{row.bool ? 'check_circle' : 'cancel'}}</mat-icon>
+      </td>
+    </ng-container>
+
+    <!-- Number Column -->
+    <ng-container matColumnDef="number">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Number </th>
+      <td mat-cell *matCellDef="let row"> {{row.number}} </td>
+    </ng-container>
+
+    <!-- Float Column -->
+    <ng-container matColumnDef="float">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Float </th>
+      <td mat-cell *matCellDef="let row"> {{row.float | number:'1.2-2'}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="matchingRecords"
+    [pageSize]="20"
+    [pageSizeOptions]="[5, 10, 20, 50]"
+    (page)="onPageChange()">
+  </mat-paginator>
+</div>
