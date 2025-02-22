@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -20,11 +20,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import { TestData } from './test.interface';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 
 @Component({
     selector: 'app-test-angular',
     imports: [
+        CommonModule,
         MatSlideToggleModule,
         MatButtonModule, 
         MatIconModule, 
@@ -45,20 +47,20 @@ import { MatNativeDateModule } from '@angular/material/core';
         MatNativeDateModule,
         MatIconModule,
         ReactiveFormsModule,
-        DecimalPipe
+        DecimalPipe,
+        MatProgressSpinnerModule,
     ],
     templateUrl: './test-angular.component.html',
     styleUrl: './test-angular.component.scss',
     standalone: true,
 })
 export class TestAngularComponent {
-    private readonly apiService = inject(TestDataService);
-
-    displayedColumns: string[] = ['text', 'date', 'bool', 'number', 'float'];
-    dataSource: MatTableDataSource<any> = new MatTableDataSource();
+    displayedColumns: string[] = ['id', 'text', 'date', 'bool', 'number', 'float'];
+    dataSource: MatTableDataSource<TestData> = new MatTableDataSource();
     totalRecords = 0;
     matchingRecords = 0;
     filterForm: FormGroup;
+    loading = false;
   
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
@@ -68,7 +70,8 @@ export class TestAngularComponent {
       private fb: FormBuilder
     ) {
       this.filterForm = this.fb.group({
-        text: [''],
+        search: [''],
+        id_like: [''],
         date_after: [''],
         date_before: [''],
         bool: [''],
@@ -95,6 +98,7 @@ export class TestAngularComponent {
     }
   
     loadData() {
+      this.loading = true;
       this.testDataService
         .getTestData(
           this.paginator?.pageIndex || 0,
@@ -107,6 +111,7 @@ export class TestAngularComponent {
           this.dataSource.data = response.results;
           this.totalRecords = response.total_records;
           this.matchingRecords = response.matching_records;
+          this.loading = false;
         });
     }
   

@@ -72,6 +72,10 @@ from .permissions import IsInGroup
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters import rest_framework as filters
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
+from django.db.models.functions import Cast
+from django.db.models import TextField
+
 
 class MyProtectedView(APIView):
     permission_classes = [IsAuthenticated, IsInGroup]
@@ -101,6 +105,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 # Filter class for Test model
 class TestFilter(filters.FilterSet):
     id_like = filters.CharFilter(field_name='id', lookup_expr='istartswith')
+    search = filters.CharFilter(method='search_fields')
     text = filters.CharFilter(lookup_expr='icontains')
     date_after = filters.DateTimeFilter(field_name='date', lookup_expr='gte')
     date_before = filters.DateTimeFilter(field_name='date', lookup_expr='lte')
@@ -109,6 +114,14 @@ class TestFilter(filters.FilterSet):
     number_max = filters.NumberFilter(field_name='number', lookup_expr='lte')
     float_min = filters.NumberFilter(field_name='float', lookup_expr='gte')
     float_max = filters.NumberFilter(field_name='float', lookup_expr='lte')
+
+    def search_fields(self, queryset, name, value):
+        return queryset.annotate(
+            id_as_text=Cast('id', TextField())
+        ).filter(
+            Q(id_as_text__istartswith=value) |
+            Q(text__icontains=value)
+        )
 
     class Meta:
         model = Test
@@ -121,6 +134,6 @@ class TestView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = TestFilter
-    search_fields = ['text']
+    # search_fields = ['text']
     ordering_fields = ['date', 'number', 'float']
     ordering = ['-date']  # Default ordering

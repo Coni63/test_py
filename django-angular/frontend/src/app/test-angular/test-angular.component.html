@@ -15,7 +15,11 @@
   <form [formGroup]="filterForm" class="filters-container">
     <mat-form-field>
       <mat-label>Text Search</mat-label>
-      <input matInput formControlName="text">
+      <input matInput formControlName="search">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>id</mat-label>
+      <input matInput formControlName="id_like">
     </mat-form-field>
 
     <mat-form-field>
@@ -75,6 +79,11 @@
   <!-- Table -->
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange()">
     <!-- Text Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="text">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Text </th>
       <td mat-cell *matCellDef="let row"> {{row.text}} </td>
@@ -107,7 +116,9 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <!-- <ng-container *ngIf="!loading"> -->
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+    <!-- </ng-container> -->
   </table>
 
   <mat-paginator
@@ -116,4 +127,13 @@
     [pageSizeOptions]="[5, 10, 20, 50]"
     (page)="onPageChange()">
   </mat-paginator>
+
+
+  <div *ngIf="loading" 
+   style="display: flex; justify-content: center; align-items: center; background: white;">
+  <mat-progress-spinner 
+    color="primary" 
+    mode="indeterminate">
+  </mat-progress-spinner>
+</div>
 </div>

@@ -28,6 +28,7 @@ export class TestDataService {
     }
 
     // Add filters
+    console.log(filters);
     Object.keys(filters).forEach(key => {
       if (filters[key] !== null && filters[key] !== '') {
         params = params.set(key, filters[key]);
