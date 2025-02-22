@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from orderable.models import Orderable
 
@@ -42,3 +43,12 @@ class Status(models.Model):
     created_at = models.DateTimeField(blank=True)
     updated_at = models.DateTimeField(blank=True)
     message = models.JSONField(blank=True)
+
+
+class Test(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    text = models.CharField(max_length=100, blank=True)
+    date = models.DateTimeField(blank=True)
+    bool = models.BooleanField(default=False)
+    number = models.IntegerField(default=0)
+    float = models.FloatField(default=0.0)

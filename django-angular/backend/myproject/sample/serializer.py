@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import A, B, C, AtoB
+from .models import A, B, C, AtoB, Test
 
 class BSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +29,9 @@ class ASerializer(serializers.ModelSerializer):
     def get_bs(self, obj):
         atob = AtoB.objects.filter(a=obj).order_by('order')
         return AtoBSerializer(atob, many=True).data
+    
+
+class TestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Test
+        fields = '__all__'
