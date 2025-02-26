@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.pdf-viewer {
+  flex: 1;
+  overflow: hidden;
+}
+
+.data-panel {
+  width: 500px;
+  background: white;
+  border-left: 1px solid #e0e0e0;
+  overflow-y: auto;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+  width: 100%;  
+  min-height: 80px;
+}
+
+.data-key {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-list-item {
+    align-items: stretch; /* Ensures content expands properly */
+    padding: 8px 16px; /* Adds spacing */
+  }
+  
