@@ -1,0 +1,81 @@
+/* datapoint.component.scss */
+// @use '@angular/material' as mat;
+
+// $my-green: mat.define-palette(mat.$green-palette, 500);
+// $my-red: mat.define-palette(mat.$red-palette, 500);
+
+$my-green: green;
+$my-red: red;
+
+.example-form {
+  padding: 20px;
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+::ng-deep {
+  .custom-green, .custom-red {
+    .mat-mdc-form-field-focus-overlay {
+      background-color: transparent !important;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      --mdc-outlined-text-field-outline-width: 2px;
+    }
+
+    .mat-mdc-text-field--focused .mat-mdc-text-field-wrapper {
+      --mdc-outlined-text-field-outline-width: 3px;
+    }
+  }
+
+  .custom-green {
+    .mat-mdc-text-field-wrapper {
+      --mdc-outlined-text-field-outline-color: $my-green !important;
+      --mdc-outlined-text-field-hover-outline-color: $my-green !important;
+      --mdc-outlined-text-field-focus-outline-color: $my-green !important;
+      --mdc-outlined-text-field-label-text-color: $my-green !important;
+      --mdc-outlined-text-field-input-text-color: $my-green !important;
+    }
+
+    .mat-mdc-form-field-hint,
+    .mat-icon,
+    .mat-mdc-floating-label {
+      color: $my-green !important;
+    }
+
+    .mdc-text-field--disabled {
+      --mdc-outlined-text-field-disabled-outline-color: $my-green !important;
+      --mdc-outlined-text-field-disabled-label-text-color: $my-green !important;
+      --mdc-outlined-text-field-disabled-input-text-color: $my-green !important;
+      opacity: 1;
+    }
+  }
+
+  .custom-red {
+    .mat-mdc-text-field-wrapper {
+      --mdc-outlined-text-field-outline-color: $my-red !important;
+      --mdc-outlined-text-field-hover-outline-color: $my-red !important;
+      --mdc-outlined-text-field-focus-outline-color: $my-red !important;
+      --mdc-outlined-text-field-label-text-color: $my-red !important;
+      --mdc-outlined-text-field-input-text-color: $my-red !important;
+    }
+
+    .mat-mdc-form-field-hint,
+    .mat-icon,
+    .mat-mdc-floating-label {
+      color: $my-red !important;
+    }
+
+    .mdc-text-field--disabled {
+      --mdc-outlined-text-field-disabled-outline-color: $my-red !important;
+      --mdc-outlined-text-field-disabled-label-text-color: $my-red !important;
+      --mdc-outlined-text-field-disabled-input-text-color: $my-red !important;
+      opacity: 1;
+    }
+  }
+}

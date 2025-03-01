@@ -6,6 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
 // import { TestTableComponent } from './test-table/test-table.component';
 import { TestAngularComponent } from './test-angular/test-angular.component';
 import { PdfDataViewerComponent } from './pdf-data-viewer/pdf-data-viewer.component';
+import { DatapointComponent } from './datapoint/datapoint.component';
 
 export const routes: Routes = [
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,6 @@ export const routes: Routes = [
     // { path: 'authorized', component: AuthorizedComponent },
     // { path: 'test', component: LayoutComponent },
     // { path: 'table', component: TestTableComponent },
-    { path: '', component: TestAngularComponent },
+    { path: '', component: AuthorizedComponent },
     { path: 'pdf-viewer', component: PdfDataViewerComponent }
 ];

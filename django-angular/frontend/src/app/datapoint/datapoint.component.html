@@ -1,0 +1,14 @@
+<div class="example-form">
+    <mat-form-field appearance="outline" class="example-full-width" [ngClass]="datapoint.isValidated ? 'custom-green' : 'custom-red'">
+      <mat-label>{{ datapoint.key }}</mat-label>
+      <input matInput [(ngModel)]="currentValue" [disabled]="this.datapoint.isValidated">
+      <mat-hint>
+        Original: {{ datapoint.initialValue }}
+      </mat-hint>
+      <mat-icon matSuffix color="accent" (click)="searchValue()">search</mat-icon>
+      <mat-icon matSuffix color="primary" (click)="validateValue()" *ngIf="!this.datapoint.isValidated">check</mat-icon>
+      <mat-icon matSuffix color="primary" (click)="resetValue()" *ngIf="!this.datapoint.isValidated">undo</mat-icon>
+      <mat-icon matSuffix color="primary" (click)="revertValue()" *ngIf="this.datapoint.isValidated">cancel</mat-icon>
+      <mat-icon matSuffix color="warn" (click)="deleteValue()" *ngIf="!this.datapoint.isValidated">delete</mat-icon>
+    </mat-form-field>
+  </div>

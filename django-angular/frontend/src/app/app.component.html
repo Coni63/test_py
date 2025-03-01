@@ -1,2 +1,11 @@
 <router-outlet />
 <!-- asdf -->
+
+<app-datapoint 
+    [datapoint]="datapoint" 
+    (onSearch)="searchDatapoint($event)"
+    (onValidate)="validateDatapoint($event)"
+    (onRevert)="revertDatapoint($event)"
+    (onDelete)="deleteDatapoint($event)"
+    *ngFor="let datapoint of datapoints"
+></app-datapoint>
