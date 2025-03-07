@@ -1,11 +1,22 @@
 <router-outlet />
-<!-- asdf -->
 
-<app-datapoint 
-    [datapoint]="datapoint" 
-    (onSearch)="searchDatapoint($event)"
-    (onValidate)="validateDatapoint($event)"
-    (onRevert)="revertDatapoint($event)"
-    (onDelete)="deleteDatapoint($event)"
-    *ngFor="let datapoint of datapoints"
-></app-datapoint>
+
+
+<div class="container-fluid mt-1">
+    <div class="flex-container">
+      <div class="flex-item" #firstElement>
+        <h2>Flex container-1</h2>
+      </div>
+      <div class="grabber" appResize [leftResize]="firstElement" [rightResize]="rightElement"></div>
+      <div class="flex-item" #rightElement>
+        <app-datapoint 
+            [datapoint]="datapoint" 
+            (onSearch)="searchDatapoint($event)"
+            (onValidate)="validateDatapoint($event)"
+            (onRevert)="revertDatapoint($event)"
+            (onDelete)="deleteDatapoint($event)"
+            *ngFor="let datapoint of datapoints"
+        ></app-datapoint>
+      </div>
+    </div>
+  </div>

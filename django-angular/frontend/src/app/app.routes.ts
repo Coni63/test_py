@@ -10,7 +10,7 @@ import { DatapointComponent } from './datapoint/datapoint.component';
 
 export const routes: Routes = [
     // { path: '', redirectTo: 'home', pathMatch: 'full' },
-    // { path: 'home', component: HomeComponent },
+    { path: 'home', component: HomeComponent },
     // { path: 'logout', component: HomeComponent },
     // { path: 'unauthorized', component: UnauthorizedComponent },
     // { path: 'forbidden', component: UnauthorizedComponent },

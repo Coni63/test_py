@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule  } from '@angular/common';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -20,17 +20,27 @@ export class HomeComponent implements OnInit {
   isAuthenticated = false;
 
   ngOnInit(): void {
-    this.oidcSecurityService.isAuthenticated$.subscribe(
-      ({ isAuthenticated }) => {
-        this.isAuthenticated = isAuthenticated;
+    // this.oidcSecurityService.isAuthenticated$.subscribe(
+    //   ({ isAuthenticated }) => {
+    //     this.isAuthenticated = isAuthenticated;
 
-        console.warn('authenticated: ', isAuthenticated);
-      }
-    );
+    //     console.warn('authenticated: ', isAuthenticated);
+    //   }
+    // );
+
+    this.oidcSecurityService
+      .checkAuth()
+      .subscribe((loginResponse: LoginResponse) => {
+        console.log(loginResponse);
+        const { isAuthenticated, userData, accessToken, idToken, configId } =
+          loginResponse;
+
+        /*...*/
+      });
   }
 
   login(): void {
-    this.oidcSecurityService.authorize("0-test_clientid", {});
+    this.oidcSecurityService.authorize();
   }
 
   refreshSession(): void {

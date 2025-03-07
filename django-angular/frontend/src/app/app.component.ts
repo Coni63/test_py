@@ -4,6 +4,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Datapoint } from './datapoint';
 import { DatapointComponent } from "./datapoint/datapoint.component";
 import { CommonModule } from '@angular/common';
+import { ResizeDirective } from './resize.directive';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     DatapointComponent,
     CommonModule,
+    ResizeDirective,
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
@@ -34,19 +36,50 @@ export class AppComponent implements OnInit {
       initialValue: 'asdfadsfasdfasdfasdf',
       validatedValue: null,
       key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: false,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
       isValidated: false,
       page: 4
     }
   ];
 
   ngOnInit(): void {
-    console.log('Datapoints:', this.datapoints);
     // this.oidcSecurityService
     //   .checkAuth()
     //   .subscribe(({ isAuthenticated, accessToken }) => {
-        // console.log('app authenticated', isAuthenticated);
-        // console.log(`Current access token is '${accessToken}'`);
-      // });
+    //     console.log('app authenticated', isAuthenticated);
+    //     console.log(`Current access token is '${accessToken}'`);
+    //   });
   }
 
   validateDatapoint(datapoint: Datapoint) {

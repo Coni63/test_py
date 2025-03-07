@@ -8,10 +8,10 @@ $my-green: green;
 $my-red: red;
 
 .example-form {
-  padding: 20px;
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
+  padding: 15px;
+  // min-width: 150px;
+  // max-width: 500px;
+  width: calc(100% - 30px);  // sub 2x the padding
 }
 
 .example-full-width {

@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor, LogLevel, provideAuth } from 'angular-auth-oidc-client';
+import { authInterceptor, LogLevel, provideAuth, OpenIdConfiguration  } from 'angular-auth-oidc-client';
 import { loggingInterceptor } from '../logging-interceptor';
 import { customAuthInterceptor } from '../auth-interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -19,22 +19,22 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor()])),
     provideAuth({
       config: {
-        authority: 'https://192.168.1.27:9090/realms/master',
-        authWellknownEndpointUrl: 'https://192.168.1.27:9090/realms/master/.well-known/openid-configuration',
-        redirectUrl: 'https://192.168.1.18:4200/home',
-        postLogoutRedirectUri: 'https://192.168.1.18:4200/logout',
-        clientId: 'test_clientid',
-        scope: 'openid profile email',
+        authority: 'http://pi5:8080/realms/master',
+        authWellknownEndpointUrl: 'http://pi5:8080/realms/master/.well-known/openid-configuration',
+        redirectUrl: 'https://localhost:4200/home',
+        postLogoutRedirectUri: 'https://localhost:4200/logout',
+        clientId: 'test-iodc',
+        scope: 'openid',
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true,
         logLevel: LogLevel.Error,
         triggerAuthorizationResultEvent: true,
-        postLoginRoute: 'https://192.168.1.18:4200/home',
-        forbiddenRoute: 'https://192.168.1.18:4200/forbidden',
-        unauthorizedRoute: 'https://192.168.1.18:4200/unauthorized',
+        postLoginRoute: 'https://localhost:4200/home',
+        forbiddenRoute: 'https://localhost:4200/forbidden',
+        unauthorizedRoute: 'https://localhost:4200/unauthorized',
         historyCleanupOff: true,
-        secureRoutes: ['/'],
+        secureRoutes: ['/']
       },
     }), provideAnimationsAsync(), provideAnimationsAsync(),
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
