@@ -9,14 +9,30 @@
       </div>
       <div class="grabber" appResize [leftResize]="firstElement" [rightResize]="rightElement"></div>
       <div class="flex-item" #rightElement>
-        <app-datapoint 
+        <mat-tree #tree [dataSource]="datapoints" [childrenAccessor]="childrenAccessor">
+            <mat-tree-node *matTreeNodeDef="let datapoint;when: hasChild" matTreeNodePadding matTreeNodeToggle [cdkTreeNodeTypeaheadLabel]="datapoint.name">
+                <mat-icon class="mat-icon-rtl-mirror">
+                    {{tree.isExpanded(datapoint) ? 'expand_more' : 'chevron_right'}}
+                  </mat-icon>{{datapoint.name}}
+            </mat-tree-node>
+            <mat-tree-node *matTreeNodeDef="let datapoint" matTreeNodePadding>
+                <app-datapoint 
+                    [datapoint]="datapoint" 
+                    (onSearch)="searchDatapoint($event)"
+                    (onValidate)="validateDatapoint($event)"
+                    (onRevert)="revertDatapoint($event)"
+                    (onDelete)="deleteDatapoint($event)"></app-datapoint>
+              </mat-tree-node>
+        </mat-tree>
+          
+        <!-- <app-datapoint 
             [datapoint]="datapoint" 
             (onSearch)="searchDatapoint($event)"
             (onValidate)="validateDatapoint($event)"
             (onRevert)="revertDatapoint($event)"
             (onDelete)="deleteDatapoint($event)"
             *ngFor="let datapoint of datapoints"
-        ></app-datapoint>
+        ></app-datapoint> -->
       </div>
     </div>
   </div>

@@ -5,7 +5,15 @@ import { Datapoint } from './datapoint';
 import { DatapointComponent } from "./datapoint/datapoint.component";
 import { CommonModule } from '@angular/common';
 import { ResizeDirective } from './resize.directive';
+import {CdkTree, CdkTreeModule} from '@angular/cdk/tree';
+import {MatTreeModule} from '@angular/material/tree';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
+interface INode {
+  name: string;
+  children?: Datapoint[] | INode[];
+}
 
 @Component({
     selector: 'app-root',
@@ -14,6 +22,10 @@ import { ResizeDirective } from './resize.directive';
     DatapointComponent,
     CommonModule,
     ResizeDirective,
+    CdkTreeModule,
+    MatTreeModule,
+    MatIconModule,
+    MatButtonModule
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
@@ -21,57 +33,154 @@ import { ResizeDirective } from './resize.directive';
 })
 export class AppComponent implements OnInit {
   // private readonly oidcSecurityService = inject(OidcSecurityService);
+  childrenAccessor = (node: Datapoint) => node.children ?? [];
+
+  hasChild = (_: number, node: Datapoint) => !!node.children && node.children.length > 0;
 
   datapoints: Datapoint[] = [
     {
-      id: '296fa464-9dea-482a-80f0-af7533649940',
-      initialValue: '42',
+      id: '',
+      name: 'Fruit',
+      initialValue: '',
       validatedValue: null,
       key: 'test key',
       isValidated: false,
-      page: 4
+      page: 4,
+      children: [
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649940',
+          initialValue: '42',
+          validatedValue: null,
+          key: 'test key',
+          isValidated: false,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: true,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: true,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: false,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: true,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: false,
+          page: 4,
+          name: null,
+          children: []
+        }
+      ],
     },
     {
-      id: '296fa464-9dea-482a-80f0-af7533649941',
-      initialValue: 'asdfadsfasdfasdfasdf',
+      id: '',
+      name: 'Vegetables',
+      initialValue: '',
       validatedValue: null,
-      key: 'test key 2',
-      isValidated: true,
-      page: 4
-    },
-    {
-      id: '296fa464-9dea-482a-80f0-af7533649941',
-      initialValue: 'asdfadsfasdfasdfasdf',
-      validatedValue: null,
-      key: 'test key 2',
-      isValidated: true,
-      page: 4
-    },
-    {
-      id: '296fa464-9dea-482a-80f0-af7533649941',
-      initialValue: 'asdfadsfasdfasdfasdf',
-      validatedValue: null,
-      key: 'test key 2',
+      key: 'test key',
       isValidated: false,
-      page: 4
+      page: 4,
+      children: [
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649940',
+          initialValue: '42',
+          validatedValue: null,
+          key: 'test key',
+          isValidated: false,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: true,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: true,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: false,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: true,
+          page: 4,
+          name: null,
+          children: []
+        },
+        {
+          id: '296fa464-9dea-482a-80f0-af7533649941',
+          initialValue: 'asdfadsfasdfasdfasdf',
+          validatedValue: null,
+          key: 'test key 2',
+          isValidated: false,
+          page: 4,
+          name: null,
+          children: []
+        }
+      ],
     },
-    {
-      id: '296fa464-9dea-482a-80f0-af7533649941',
-      initialValue: 'asdfadsfasdfasdfasdf',
-      validatedValue: null,
-      key: 'test key 2',
-      isValidated: true,
-      page: 4
-    },
-    {
-      id: '296fa464-9dea-482a-80f0-af7533649941',
-      initialValue: 'asdfadsfasdfasdfasdf',
-      validatedValue: null,
-      key: 'test key 2',
-      isValidated: false,
-      page: 4
-    }
-  ];
+  ];;
 
   ngOnInit(): void {
     // this.oidcSecurityService
@@ -83,23 +192,23 @@ export class AppComponent implements OnInit {
   }
 
   validateDatapoint(datapoint: Datapoint) {
-    let item = this.datapoints.find(x => x.id == datapoint.id);
-    if (item && !item.isValidated ) {
-      item.isValidated = true;
-    }
-    console.log("validateDatapoint ", datapoint);
+    // let item = this.datapoints.find(x => x.id == datapoint.id);
+    // if (item && !item.isValidated ) {
+    //   item.isValidated = true;
+    // }
+    // console.log("validateDatapoint ", datapoint);
   }
 
   revertDatapoint(datapoint: Datapoint) {
-    let item = this.datapoints.find(x => x.id == datapoint.id);
-    if (item && item.isValidated ) {
-      item.isValidated = false;
-    }
-    console.log("revertDatapoint ", datapoint);
+    // let item = this.datapoints.find(x => x.id == datapoint.id);
+    // if (item && item.isValidated ) {
+    //   item.isValidated = false;
+    // }
+    // console.log("revertDatapoint ", datapoint);
   }
 
   deleteDatapoint(datapoint: Datapoint) {
-    this.datapoints = this.datapoints.filter(x => x.id != datapoint.id);
+    // this.datapoints = this.datapoints.filter(x => x.id != datapoint.id);
   }
 
   searchDatapoint(datapoint: Datapoint) {

@@ -5,4 +5,6 @@ export interface Datapoint {
     key: string,
     isValidated: boolean,
     page: number | null
+    children: Datapoint[],
+    name: string | null,
   }
