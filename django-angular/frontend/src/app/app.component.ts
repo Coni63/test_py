@@ -9,10 +9,13 @@ import {CdkTree, CdkTreeModule} from '@angular/cdk/tree';
 import {MatTreeModule} from '@angular/material/tree';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatTableDataSource } from '@angular/material/table';
+import {MatTableModule} from '@angular/material/table';
+import {MatDividerModule} from '@angular/material/divider';
 interface INode {
   name: string;
-  children?: Datapoint[] | INode[];
+  expanded: boolean;
+  objects?: Datapoint[];
 }
 
 @Component({
@@ -25,7 +28,9 @@ interface INode {
     CdkTreeModule,
     MatTreeModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule,
+    MatDividerModule
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
@@ -33,154 +38,264 @@ interface INode {
 })
 export class AppComponent implements OnInit {
   // private readonly oidcSecurityService = inject(OidcSecurityService);
-  childrenAccessor = (node: Datapoint) => node.children ?? [];
 
-  hasChild = (_: number, node: Datapoint) => !!node.children && node.children.length > 0;
-
-  datapoints: Datapoint[] = [
-    {
-      id: '',
-      name: 'Fruit',
-      initialValue: '',
+  // datapoints: Datapoint[] = [
+  //   {
+  //     id: '',
+  //     name: 'Fruit',
+  //     initialValue: '',
+  //     validatedValue: null,
+  //     key: 'test key',
+  //     isValidated: false,
+  //     page: 4,
+  //     children: [
+        // {
+        //   id: '296fa464-9dea-482a-80f0-af7533649940',
+        //   initialValue: '42',
+        //   validatedValue: null,
+        //   key: 'test key',
+        //   isValidated: false,
+        //   page: 4,
+        //   name: null,
+        //   children: []
+        // },
+        // {
+        //   id: '296fa464-9dea-482a-80f0-af7533649941',
+        //   initialValue: 'asdfadsfasdfasdfasdf',
+        //   validatedValue: null,
+        //   key: 'test key 2',
+        //   isValidated: true,
+        //   page: 4,
+        //   name: null,
+        //   children: []
+        // },
+        // {
+        //   id: '296fa464-9dea-482a-80f0-af7533649941',
+        //   initialValue: 'asdfadsfasdfasdfasdf',
+        //   validatedValue: null,
+        //   key: 'test key 2',
+        //   isValidated: true,
+        //   page: 4,
+        //   name: null,
+        //   children: []
+        // },
+        // {
+        //   id: '296fa464-9dea-482a-80f0-af7533649941',
+        //   initialValue: 'asdfadsfasdfasdfasdf',
+        //   validatedValue: null,
+        //   key: 'test key 2',
+        //   isValidated: false,
+        //   page: 4,
+        //   name: null,
+        //   children: []
+        // },
+        // {
+        //   id: '296fa464-9dea-482a-80f0-af7533649941',
+        //   initialValue: 'asdfadsfasdfasdfasdf',
+        //   validatedValue: null,
+        //   key: 'test key 2',
+        //   isValidated: true,
+        //   page: 4,
+        //   name: null,
+        //   children: []
+        // },
+        // {
+        //   id: '296fa464-9dea-482a-80f0-af7533649941',
+        //   initialValue: 'asdfadsfasdfasdfasdf',
+        //   validatedValue: null,
+        //   key: 'test key 2',
+        //   isValidated: false,
+        //   page: 4,
+        //   name: null,
+        //   children: []
+        // }
+  //     ],
+  //   },
+  //   {
+  //     id: '',
+  //     name: 'Vegetables',
+  //     initialValue: '',
+  //     validatedValue: null,
+  //     key: 'test key',
+  //     isValidated: false,
+  //     page: 4,
+  //     children: [
+  //       {
+  //         id: '296fa464-9dea-482a-80f0-af7533649940',
+  //         initialValue: '42',
+  //         validatedValue: null,
+  //         key: 'test key',
+  //         isValidated: false,
+  //         page: 4,
+  //         name: null,
+  //         children: []
+  //       },
+  //       {
+  //         id: '296fa464-9dea-482a-80f0-af7533649941',
+  //         initialValue: 'asdfadsfasdfasdfasdf',
+  //         validatedValue: null,
+  //         key: 'test key 2',
+  //         isValidated: true,
+  //         page: 4,
+  //         name: null,
+  //         children: []
+  //       },
+  //       {
+  //         id: '296fa464-9dea-482a-80f0-af7533649941',
+  //         initialValue: 'asdfadsfasdfasdfasdf',
+  //         validatedValue: null,
+  //         key: 'test key 2',
+  //         isValidated: true,
+  //         page: 4,
+  //         name: null,
+  //         children: []
+  //       },
+  //       {
+  //         id: '296fa464-9dea-482a-80f0-af7533649941',
+  //         initialValue: 'asdfadsfasdfasdfasdf',
+  //         validatedValue: null,
+  //         key: 'test key 2',
+  //         isValidated: false,
+  //         page: 4,
+  //         name: null,
+  //         children: []
+  //       },
+  //       {
+  //         id: '296fa464-9dea-482a-80f0-af7533649941',
+  //         initialValue: 'asdfadsfasdfasdfasdf',
+  //         validatedValue: null,
+  //         key: 'test key 2',
+  //         isValidated: true,
+  //         page: 4,
+  //         name: null,
+  //         children: []
+  //       },
+  //       {
+  //         id: '296fa464-9dea-482a-80f0-af7533649941',
+  //         initialValue: 'asdfadsfasdfasdfasdf',
+  //         validatedValue: null,
+  //         key: 'test key 2',
+  //         isValidated: false,
+  //         page: 4,
+  //         name: null,
+  //         children: []
+  //       }
+  //     ],
+  //   },
+  // ];
+  // displayedColumns: string[] = ['group'];
+  groups2: INode[] = [];
+  groups: INode[] = [
+    { name: 'Group A', expanded: true, objects: [      {
+      id: '296fa464-9dea-482a-80f0-af7533649940',
+      initialValue: '42',
       validatedValue: null,
       key: 'test key',
       isValidated: false,
-      page: 4,
-      children: [
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649940',
-          initialValue: '42',
-          validatedValue: null,
-          key: 'test key',
-          isValidated: false,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: true,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: true,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: false,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: true,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: false,
-          page: 4,
-          name: null,
-          children: []
-        }
-      ],
+      page: 4
     },
     {
-      id: '',
-      name: 'Vegetables',
-      initialValue: '',
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: false,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: false,
+      page: 4
+    }] },
+    { name: 'Group B', expanded: false, objects: [      {
+      id: '296fa464-9dea-482a-80f0-af7533649940',
+      initialValue: '42',
       validatedValue: null,
       key: 'test key',
       isValidated: false,
-      page: 4,
-      children: [
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649940',
-          initialValue: '42',
-          validatedValue: null,
-          key: 'test key',
-          isValidated: false,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: true,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: true,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: false,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: true,
-          page: 4,
-          name: null,
-          children: []
-        },
-        {
-          id: '296fa464-9dea-482a-80f0-af7533649941',
-          initialValue: 'asdfadsfasdfasdfasdf',
-          validatedValue: null,
-          key: 'test key 2',
-          isValidated: false,
-          page: 4,
-          name: null,
-          children: []
-        }
-      ],
+      page: 4
     },
-  ];;
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: false,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: true,
+      page: 4
+    },
+    {
+      id: '296fa464-9dea-482a-80f0-af7533649941',
+      initialValue: 'asdfadsfasdfasdfasdf',
+      validatedValue: null,
+      key: 'test key 2',
+      isValidated: false,
+      page: 4
+    }] },
+  ];
+
+  dataSource = new MatTableDataSource(this.groups);
+  expandedGroup: INode | null = null;
+
+  // toggleGroup(group: INode) {
+  //   this.expandedGroup = this.expandedGroup === group ? null : group;
+  //   console.log(this.expandedGroup);
+  // }
+
+  isExpanded = (index: number, row: INode) => {
+    console.log(index, row.name, this.expandedGroup?.name);
+    return row === this.expandedGroup;
+  }
 
   ngOnInit(): void {
     // this.oidcSecurityService
@@ -215,4 +330,8 @@ export class AppComponent implements OnInit {
     console.log("search ", datapoint);
   }
 
+
+  toggleGroup(group: INode) {
+    group.expanded = !group.expanded;
+  }
 }

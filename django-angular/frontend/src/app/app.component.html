@@ -8,31 +8,25 @@
         <h2>Flex container-1</h2>
       </div>
       <div class="grabber" appResize [leftResize]="firstElement" [rightResize]="rightElement"></div>
-      <div class="flex-item" #rightElement>
-        <mat-tree #tree [dataSource]="datapoints" [childrenAccessor]="childrenAccessor">
-            <mat-tree-node *matTreeNodeDef="let datapoint;when: hasChild" matTreeNodePadding matTreeNodeToggle [cdkTreeNodeTypeaheadLabel]="datapoint.name">
-                <mat-icon class="mat-icon-rtl-mirror">
-                    {{tree.isExpanded(datapoint) ? 'expand_more' : 'chevron_right'}}
-                  </mat-icon>{{datapoint.name}}
-            </mat-tree-node>
-            <mat-tree-node *matTreeNodeDef="let datapoint" matTreeNodePadding>
-                <app-datapoint 
-                    [datapoint]="datapoint" 
-                    (onSearch)="searchDatapoint($event)"
-                    (onValidate)="validateDatapoint($event)"
-                    (onRevert)="revertDatapoint($event)"
-                    (onDelete)="deleteDatapoint($event)"></app-datapoint>
-              </mat-tree-node>
-        </mat-tree>
-          
-        <!-- <app-datapoint 
-            [datapoint]="datapoint" 
-            (onSearch)="searchDatapoint($event)"
-            (onValidate)="validateDatapoint($event)"
-            (onRevert)="revertDatapoint($event)"
-            (onDelete)="deleteDatapoint($event)"
-            *ngFor="let datapoint of datapoints"
-        ></app-datapoint> -->
+      <div class="flex-item fit-content" #rightElement>
+
+        <ng-container *ngFor="let group of groups">
+          <mat-divider [inset]="false"></mat-divider>
+          <button mat-icon-button (click)="toggleGroup(group)">
+            <mat-icon>{{ group.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>{{group.name}}
+          <div class="test" [class.visible]="group.expanded">
+            <app-datapoint
+                        [datapoint]="datapoint"
+                        (onSearch)="searchDatapoint($event)"
+                        (onValidate)="validateDatapoint($event)"
+                        (onRevert)="revertDatapoint($event)"
+                        (onDelete)="deleteDatapoint($event)" *ngFor="let datapoint of group.objects">
+                      </app-datapoint>
+          </div>
+        </ng-container>
+        <mat-divider [inset]="false"></mat-divider>
+        
       </div>
     </div>
   </div>

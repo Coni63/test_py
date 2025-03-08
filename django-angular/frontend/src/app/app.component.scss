@@ -3,6 +3,7 @@
     flex-direction: row;
     justify-content: stretch;
     height: 80vh;
+    overflow: hidden;
 }
 .flex-item{
     // flex:1 5 50%;
@@ -19,3 +20,37 @@
 .side-panel{
     background-color: lightgray;  
 }
+
+.expanded-detail {
+    overflow: hidden;
+    transition: all 0.3s ease;
+    padding: 16px;
+  }
+  
+  .expanded-detail table {
+    width: 100%;
+  }
+  
+  .mat-mdc-row:not(.expanded-row):hover {
+    background: whitesmoke;
+    cursor: pointer;
+  }
+  
+  .mat-mdc-row:not(.expanded-row):active {
+    background: #efefef;
+  }
+
+  .test {
+    height: fit-content;
+  }
+  
+  .visible {
+    height: 0px !important;
+    overflow: hidden;
+    transition: all 3s ease;
+  }
+
+  .fit-content {
+    overflow-y: scroll;
+  }
+
