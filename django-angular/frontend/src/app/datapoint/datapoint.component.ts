@@ -10,6 +10,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Datapoint } from '../datapoint';
 
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzFormModule, NzFormTooltipIcon } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-datapoint',
@@ -23,7 +29,13 @@ import { Datapoint } from '../datapoint';
     MatDividerModule,
     MatListModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    NzInputModule,
+    NzSelectModule,
+    NzIconModule,
+    NzButtonModule,
+    NzCheckboxModule,
+    NzFormModule, 
   ],
   templateUrl: './datapoint.component.html',
   styleUrl: './datapoint.component.scss'

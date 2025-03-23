@@ -1,4 +1,4 @@
-<div class="example-form">
+<div class="example-form outlined">
     <mat-form-field appearance="outline" class="example-full-width" [ngClass]="datapoint.isValidated ? 'custom-green' : 'custom-red'">
       <mat-label>{{ datapoint.key }}</mat-label>
       <input matInput [(ngModel)]="currentValue" [disabled]="this.datapoint.isValidated">
@@ -12,3 +12,20 @@
       <mat-icon matSuffix color="warn" (click)="deleteValue()" *ngIf="!this.datapoint.isValidated">delete</mat-icon>
     </mat-form-field>
   </div>
+
+  <nz-form-item class="outlined">
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
+      <nz-input-group [nzAddOnAfter]="addOnAfterTemplate">
+        <input nz-input [(ngModel)]="currentValue" id="email" />
+      </nz-input-group>
+      <div class="hint-text">Example: mywebsite</div>
+    </nz-form-control>
+  </nz-form-item>
+  
+  <ng-template #addOnAfterTemplate>
+    <nz-icon nzType="search" />
+    <nz-icon nzType="check" />
+    <nz-icon nzType="search" />
+    <nz-icon nzType="delete" />
+  </ng-template>
