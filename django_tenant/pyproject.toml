@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "django-tenant"
+version = "0.1.0"
+description = ""
+authors = ["Nicolas M. <mine.nicolas@gmail.com>"]
+readme = "README.md"
+packages = [{include = "django_tenant"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.1.7"
+psycopg2-binary = "^2.9.10"
+gunicorn = "^23.0.0"
+django-tenants = "^3.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
