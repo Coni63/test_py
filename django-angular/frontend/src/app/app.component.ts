@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatTableModule} from '@angular/material/table';
 import {MatDividerModule} from '@angular/material/divider';
+import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 interface INode {
   name: string;
   expanded: boolean;
@@ -30,7 +31,8 @@ interface INode {
     MatIconModule,
     MatButtonModule,
     MatTableModule,
-    MatDividerModule
+    MatDividerModule,
+    UserAvatarComponent
 ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',

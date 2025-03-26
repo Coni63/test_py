@@ -8,10 +8,14 @@ $my-green: green;
 $my-red: red;
 
 .example-form {
-  padding: 15px;
+  // padding: 15px;
   // min-width: 150px;
   // max-width: 500px;
-  width: calc(100% - 30px);  // sub 2x the padding
+  // width: calc(100% - 30px);  // sub 2x the padding
+}
+
+.ant-form-item {
+  margin-bottom: 4px;
 }
 
 .example-full-width {
@@ -89,5 +93,5 @@ $my-red: red;
 }
 
 .outlined {
-  border: 1px solid red;
+  // border: 1px solid red;
 }

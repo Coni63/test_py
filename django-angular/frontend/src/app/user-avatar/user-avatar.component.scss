@@ -1,0 +1,38 @@
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background-size: 200% 200%;
+    background-position: 50% 50%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .user-avatar::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at center, 
+      rgba(255,255,255,0.3) 0%, 
+      rgba(255,255,255,0) 70%
+    );
+    transform: rotate(-45deg);
+    z-index: 1;
+  }
+
+  .user-avatar:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+  }
