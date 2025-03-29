@@ -2,5 +2,11 @@ python manage.py migrate_schemas --shared
 
 python manage.py createsuperuser
 
+python manage.py add_client tenant1
+python manage.py add_client tenant2
+
 
 poetry run python manage.py migrate_schemas  
+
+
+python manage.py runserver
