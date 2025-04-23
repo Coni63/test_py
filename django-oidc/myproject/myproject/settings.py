@@ -148,6 +148,21 @@ REST_FRAMEWORK = {
     ]
 }
 
+"""
+import requests
+
+url = "https://pi5.local/keycloak/realms/master/protocol/openid-connect/token"
+
+payload='client_id=test-iodc&client_secret=EDPr3dbwIE1ui7QCpktSKRveeDcIUwC1&username=nmine&password=password&grant_type=password&scope=openid'
+headers = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+"""
+
 
 OIDC_RP_CLIENT_ID = "test-iodc"
 OIDC_RP_CLIENT_SECRET = "EDPr3dbwIE1ui7QCpktSKRveeDcIUwC1"
