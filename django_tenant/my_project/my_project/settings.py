@@ -37,7 +37,9 @@ SHARED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rest_framework',
+    "oauth2_provider",
+    "rest_framework",
+    "rest_framework_simplejwt",
     'django_tenants',
     'customer',
 ]
@@ -141,3 +143,19 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+# https://pi5.local/keycloak/realms/master/.well-known/openid-configuration
+OIDC_CONFIG = {
+    "PROVIDER_URL": "https://pi5.local/keycloak",  # Keycloak/Auth0/Google
+    "CLIENT_ID": "test-iodc",
+    "CLIENT_SECRET": "EDPr3dbwIE1ui7QCpktSKRveeDcIUwC1",  # Only if using a backend secret
+    "REDIRECT_URI": "http://localhost:8000/auth/exchange",  # Django backend endpoint
+    "TOKEN_ENDPOINT": "https://pi5.local/keycloak/realms/master/protocol/openid-connect/token",
+}
