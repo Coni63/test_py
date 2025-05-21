@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "django-testq"
+version = "0.1.0"
+description = ""
+authors = ["Nicolas M. <mine.nicolas@gmail.com>"]
+readme = "README.md"
+packages = [{include = "django_testq"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.2.1"
+django-q = "^1.3.9"
+django-q2 = "^1.8.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
