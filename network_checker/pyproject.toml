@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "network-checker"
+version = "0.1.0"
+description = ""
+authors = ["Nicolas M. <mine.nicolas@gmail.com>"]
+readme = "README.md"
+packages = [{include = "network_checker"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.11.7"
+oracledb = "^3.1.1"
+kafka-python = "^2.2.13"
+psycopg2 = "^2.9.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

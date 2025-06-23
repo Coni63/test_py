@@ -1,0 +1,83 @@
+oracle:
+  - name: "Production Oracle DB"
+    host: "oracle-prod.company.com"
+    port: 1521
+    service_name: "PRODDB"
+    username: "app_user"
+    password: "your_password"
+    timeout: 15
+
+  - name: "Test Oracle DB"
+    host: "oracle-test.company.com"
+    port: 1521
+    sid: "TESTDB"
+    username: "test_user"
+    password: "test_password"
+    timeout: 10
+
+postgres:
+  - name: "Main PostgreSQL"
+    host: "postgres-main.company.com"
+    port: 5432
+    database: "maindb"
+    username: "postgres"
+    password: "your_postgres_password"
+    timeout: 10
+
+  - name: "Analytics PostgreSQL"
+    host: "postgres-analytics.company.com"
+    port: 5432
+    database: "analytics"
+    username: "analytics_user"
+    password: "analytics_password"
+    timeout: 15
+
+webservices:
+  - name: "User Service API"
+    url: "https://api.company.com/users/health"
+    method: "GET"
+    headers:
+      Authorization: "Bearer your-api-token"
+      Content-Type: "application/json"
+    expected_status: [200, 204]
+    timeout: 10
+
+  - name: "Payment Gateway"
+    url: "https://payments.company.com/status"
+    method: "GET"
+    auth_username: "api_user"
+    auth_password: "api_password"
+    verify_ssl: true
+    expected_status: [200]
+    timeout: 15
+
+  - name: "Internal Service (No Auth)"
+    url: "http://internal-service:8080/health"
+    method: "GET"
+    verify_ssl: false
+    expected_status: [200, 201]
+    timeout: 5
+
+kafka:
+  - name: "Production Kafka - User Events"
+    bootstrap_servers:
+      - "kafka1.company.com:9092"
+      - "kafka2.company.com:9092"
+      - "kafka3.company.com:9092"
+    topic: "user-events"
+    security_protocol: "PLAINTEXT"
+    timeout: 10
+
+  - name: "Secure Kafka - Audit Logs"
+    bootstrap_servers:
+      - "secure-kafka1.company.com:9093"
+      - "secure-kafka2.company.com:9093"
+    topic: "audit-logs"
+    security_protocol: "SASL_SSL"
+    sasl_mechanism: "PLAIN"
+    sasl_username: "kafka_user"
+    sasl_password: "kafka_password"
+    ssl_cafile: "/path/to/ca-cert.pem"
+    ssl_certfile: "/path/to/client-cert.pem"
+    ssl_keyfile: "/path/to/client-key.pem"
+    timeout: 15
