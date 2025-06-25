@@ -1,0 +1,19 @@
+<div class="chat-container">
+  <div class="messages">
+    <div *ngFor="let msg of data" 
+         [class.sent]="msg.created_by.username === currentUser"
+         [class.received]="msg.created_by.username !== currentUser"
+         class="message">
+      <div class="message-header">
+        <span class="username">{{msg.created_by.username}}</span>
+        <span class="time">{{msg.created_at | date:'dd/MM HH:mm'}}</span>
+      </div>
+      <div class="message-content">{{msg.message}}</div>
+    </div>
+  </div>
+  
+  <div class="message-input">
+    <input [(ngModel)]="newMessage" placeholder="Écrire un message..." (keyup.enter)="sendMessage()">
+    <button (click)="sendMessage()">Envoyer</button>
+  </div>
+</div>
