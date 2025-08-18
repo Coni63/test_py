@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<style>
+.tooltip {
+  position: absolute;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  pointer-events: none; /* évite que la souris accroche le tooltip */
+}
+</style>
+
+<svg width="800" height="600"></svg>
+<div id="tooltip" class="tooltip" style="opacity:0;"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+const svg = d3.select("svg");
+const tooltip = d3.select("#tooltip");
+
+const width = +svg.attr("width");
+const height = +svg.attr("height");
+
+// Exemple de données
+const inputs = ["in1", "in2", "in3"];
+const outputs = ["out1", "out2", "out3", "out4"];
+const links = [
+  { source: "in1", target: "out1", active: true, value: "link A" },
+  { source: "in1", target: "out3", active: false, value: "link B" },
+  { source: "in2", target: "out2", active: true, value: "link C" },
+  { source: "in3", target: "out2", active: false, value: "link D" },
+  { source: "in3", target: "out4", active: true, value: "link E" }
+];
+
+const nodeRadius = 12;
+
+const nodes = [
+  ...inputs.map((id, i) => ({ id, type: "input", x: 100, y: 100 + i*80, value: `Input ${id}` })),
+  ...outputs.map((id, i) => ({ id, type: "output", x: width-100, y: 100 + i*80, value: `Output ${id}` }))
+];
+
+const nodeById = Object.fromEntries(nodes.map(d => [d.id, d]));
+
+// courbes Bézier
+function curvedLink(d) {
+  const x1 = nodeById[d.source].x;
+  const y1 = nodeById[d.source].y;
+  const x2 = nodeById[d.target].x;
+  const y2 = nodeById[d.target].y;
+  const dx = (x2 - x1) / 2;
+  return `M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`;
+}
+
+// liens
+const link = svg.append("g")
+  .selectAll("path")
+  .data(links)
+  .join("path")
+  .attr("d", curvedLink)
+  .attr("fill", "none")
+  .attr("stroke", "black")
+  .attr("stroke-width", 2)
+  .attr("stroke-dasharray", d => d.active ? null : "4,4")
+  .attr("class", "link");
+
+// nodes
+const node = svg.append("g")
+  .selectAll("circle")
+  .data(nodes)
+  .join("circle")
+  .attr("cx", d => d.x)
+  .attr("cy", d => d.y)
+  .attr("r", nodeRadius)
+  .attr("fill", d => d.type === "input" ? "steelblue" : "orange")
+  .attr("class", "node");
+
+// labels
+svg.append("g")
+  .selectAll("text")
+  .data(nodes)
+  .join("text")
+  .attr("x", d => d.x)
+  .attr("y", d => d.y - nodeRadius - 5)
+  .attr("text-anchor", "middle")
+  .text(d => d.id);
+
+// highlight + tooltip nodes
+node.on("mouseover", function(event, d) {
+  node.attr("stroke", null).attr("stroke-width", null);
+  link.attr("stroke", "black").attr("stroke-width", 2);
+
+  const neighbors = new Set();
+  links.forEach(l => {
+    if (l.source === d.id) neighbors.add(l.target);
+    if (l.target === d.id) neighbors.add(l.source);
+  });
+
+  d3.select(this).attr("stroke", "red").attr("stroke-width", 3);
+  node.filter(n => neighbors.has(n.id))
+      .attr("stroke", "red").attr("stroke-width", 3);
+  link.filter(l => l.source === d.id || l.target === d.id)
+      .attr("stroke", "red").attr("stroke-width", 3);
+
+  // tooltip
+  tooltip.style("opacity", 1)
+         .html(d.value)
+         .style("left", (event.pageX + 10) + "px")
+         .style("top", (event.pageY + 10) + "px");
+})
+.on("mousemove", function(event) {
+  tooltip.style("left", (event.pageX + 10) + "px")
+         .style("top", (event.pageY + 10) + "px");
+})
+.on("mouseout", () => {
+  node.attr("stroke", null).attr("stroke-width", null);
+  link.attr("stroke", "black").attr("stroke-width", 2);
+  tooltip.style("opacity", 0);
+});
+
+// tooltip aussi pour les liens
+link.on("mouseover", function(event, d) {
+  d3.select(this).attr("stroke", "red").attr("stroke-width", 3);
+
+  tooltip.style("opacity", 1)
+         .html(d.value)
+         .style("left", (event.pageX + 10) + "px")
+         .style("top", (event.pageY + 10) + "px");
+})
+.on("mousemove", function(event) {
+  tooltip.style("left", (event.pageX + 10) + "px")
+         .style("top", (event.pageY + 10) + "px");
+})
+.on("mouseout", function() {
+  d3.select(this).attr("stroke", "black").attr("stroke-width", 2);
+  tooltip.style("opacity", 0);
+});
+</script>
+</body>
+</html>
